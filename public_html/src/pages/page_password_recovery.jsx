@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class PagePasswordRecovery extends React.Component {
   constructor(props) {
@@ -12,7 +13,24 @@ class PagePasswordRecovery extends React.Component {
     };
 
     return (
-      <p style={style}>nice one, you dick.</p>
+      <div style={style}>
+        <h1 className='centered'>Reset Password</h1>
+        <form action='/passwordrecovery' method='post' className='loginForm'>
+          <div>
+            <label>Email:</label>
+            <input type='text' name='email' />
+          </div>
+          <div>
+            <div className='pad' />
+            <div className='flexLeft'>
+              <button type='submit'>Submit</button>
+            </div>
+          </div>
+        </form>
+        <br />
+        <p>Don't have an account? <Link to='/signup'>Sign Up</Link></p>
+        <p>Return <Link to='/'>Home</Link></p>
+      </div>
     );
   };
 }

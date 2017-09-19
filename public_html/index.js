@@ -15,6 +15,22 @@ app.get('/app.bundle.js', function(req, res) {
   res.sendFile(__dirname + '/app.bundle.js');
 });
 
+//handle messages
+app.post('/login', function(req, res) {
+  res.write('<p>Coming Soon</p>');
+  res.end();
+});
+
+app.post('/signup', function(req, res) {
+  res.write('<p>Coming Soon</p>');
+  res.end();
+});
+
+app.post('/passwordrecovery', function(req, res) {
+  res.write('<p>Coming Soon</p>');
+  res.end();
+});
+
 //fallback
 app.get('*', function(req, res) {
   res.sendFile(__dirname + '/index.html');
