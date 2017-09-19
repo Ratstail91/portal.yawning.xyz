@@ -1,6 +1,6 @@
 ## Outline
 
-The Yawning Portal is a popular tavern in the city of Waterdeep, where adventurers from all over the Forgotten Realms and beyond gather to drink, trade stories of epic heroism, and gather intel on on various goings on that may lead an adventurer to riches beyond their wildest imaginations.
+The Yawning Portal is a popular tavern in the city of Waterdeep, where adventurers from all over the Forgotten Realms and beyond gather to drink, trade stories of epic heroism, and gather intel on various goings on that may lead an adventurer to riches beyond their wildest imaginations.
 
 This is not The Yawning Portal.
 
