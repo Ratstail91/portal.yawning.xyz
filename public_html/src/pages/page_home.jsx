@@ -27,7 +27,7 @@ class PageHome extends React.Component {
         <div style={buttonStyles}>
           <Link to='/login'>Login</Link>
           <Link to='/signup'>Sign Up</Link>
-          <Link to='/passwordrecovery'>Recover Lost Password</Link>
+          <Link to='/passwordrecovery'>Reset Password</Link>
         </div>
       </div>
     );
