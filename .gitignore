@@ -5,5 +5,8 @@ logs/**
 /**/dl
 /**/music
 
+#log files
+/**/*.log
+
 #output files
 *.bundle.js
