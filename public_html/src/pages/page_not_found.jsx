@@ -1,5 +1,4 @@
 import React from 'react';
-import { Header } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 class PageNotFound extends React.Component {
@@ -19,7 +18,7 @@ class PageNotFound extends React.Component {
 
     return (
       <div style={style}>
-        <Header as='h1'>404 - Page Not Found</Header>
+        <h1>404 - Page Not Found</h1>
         <Link to='/'>Return Home</Link>
       </div>
     );

@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font: 13pt Helvetica, Arial;
+  width: 100vw;
+  height: 100vh;
+  background: #e0bad6;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+@media screen and (min-width: 480px) {
+  .central {
+    margin: 0 10%;
+  }
+}
+
+.central {
+  height: 100vh;
+  background: #ffd3f3;
+}
+
+.central p {
+  padding-bottom: .5rem;
+}
+
+.centered {
+  text-align: center;
+}
+
+h1 {
+  font: 24pt;
+}

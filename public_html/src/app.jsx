@@ -21,13 +21,14 @@ class App extends React.Component {
 
   render() {
     var style = {
+      flex: '1',
       display: 'flex',
       flexDirection: 'column',
       minHeight: '100vh'
     };
 
     return (
-      <div style={style}>
+      <div style={style} className='central'>
         <Switch>
           <Route exact path='/' component={PageHome} />
           <Route path='/login' component={PageLogin} />
