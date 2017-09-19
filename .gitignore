@@ -1,0 +1,9 @@
+#directories
+logs/**
+/**/coverage
+/**/node_modules
+/**/dl
+/**/music
+
+#output files
+*.bundle.js
