@@ -15,6 +15,11 @@ app.get('/app.bundle.js', function(req, res) {
   res.sendFile(__dirname + '/app.bundle.js');
 });
 
+//fallback
+app.get('*', function(req, res) {
+  res.sendFile(__dirname + '/index.html');
+});
+
 //startup
 http.listen(4000, function() {
   console.log('listening to *:4000');
