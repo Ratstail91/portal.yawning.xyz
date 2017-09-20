@@ -4,7 +4,7 @@ USE yawning;
 CREATE TABLE signups (
   email VARCHAR(50) UNIQUE,
   salt VARCHAR(50),
-  hash VARCHAR(50),
+  hash VARCHAR(100),
   verify INTEGER DEFAULT 0
 );
 
@@ -13,7 +13,8 @@ CREATE TABLE profiles (
   td TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   email VARCHAR(50) UNIQUE,
   salt VARCHAR(50),
-  hash VARCHAR(50),
+  hash VARCHAR(100),
+  lastToken INTEGER,
   username VARCHAR(50) NOT NULL DEFAULT '',
   firstname VARCHAR(50) NOT NULL DEFAULT '',
   lastname VARCHAR(50) NOT NULL DEFAULT '',

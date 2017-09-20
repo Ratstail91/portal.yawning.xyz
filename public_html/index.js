@@ -77,7 +77,7 @@ app.post('/signup', function(req, res) {
           query += '"' + salt + '"' + ',';
           query += '"' + hash + '"' + ',';
           query += rand + ');';
-  console.log(query);
+
           db.query(query, function(err) {
             if (err) throw err;
 
@@ -145,8 +145,54 @@ app.get('/verify', function(req, res) {
 });
 
 app.post('/login', function(req, res) {
-  res.write('<p>Coming Soon</p>');
-  res.end();
+  //formidable handles forms
+  var form = formidable.IncomingForm();
+
+  //parse form
+  form.parse(req, function(err, fields) {
+    if (err) throw err;
+
+    //valid email and password
+    if (!validateEmail(fields.email) || fields.password.length < 8) {
+      res.status(400).write('<img src="' + getMeme('hackerman') + '" />');
+      res.end();
+      return;
+    }
+
+    //find this email's information
+    db.query('SELECT email, salt, hash FROM profiles WHERE email="' + fields.email + '";', function(err, results) {
+      if (err) throw err;
+
+      //gen a new hash hash
+      bcrypt.hash(fields.password, results[0].salt, function(err, hash) {
+        if (err) throw err;
+
+        //compare the calculated hash to the stored hash
+        if (hash !== results[0].hash) {
+          res.status(400).write('Incorrect Password');
+          res.end();
+          return;
+        }
+
+        //create and store the login token
+        var rand = Math.floor(Math.random() * 65535);
+
+        //TODO: allow multiple login sources
+        var query = 'UPDATE profiles SET lastToken=' + rand + ' WHERE email="' + results[0].email + '";';
+
+        db.query(query, function(err) {
+          if (err) throw err;
+
+            //send the JSON containing the email and token
+            res.status(200).json({
+              email: results[0].email,
+              token: rand
+            });
+            res.end();
+        });
+      });
+    });
+  });
 });
 
 app.post('/passwordrecovery', function(req, res) {
