@@ -5,6 +5,9 @@ logs/**
 /**/dl
 /**/music
 
+#passwords
+/**/*.pwd
+
 #log files
 /**/*.log
 
