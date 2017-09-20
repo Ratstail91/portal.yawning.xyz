@@ -1,11 +1,14 @@
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
-var fs = require('fs');
-var mysql = require('mysql');
+
 var bcrypt = require('bcrypt');
 var formidable = require('formidable');
+var fs = require('fs');
+var mysql = require('mysql');
 var sendmail = require('sendmail')();
+
+var { getMeme, validateEmail } = require('./scripts/utilities.js');
 
 //db connections
 var db = mysql.createConnection({
@@ -43,6 +46,13 @@ app.post('/signup', function(req, res) {
   //parse form
   form.parse(req, function(err, fields) {
     if (err) throw err;
+
+    //valid email and password
+    if (!validateEmail(fields.email) || fields.password.length < 8 || fields.password !== fields.retype) {
+      res.write('<html><body><img src="' + getMeme('hackerman') + '" /></body></html>');
+      res.end();
+      return;
+    }
 
     //check if the email already exists
     db.query('SELECT COUNT(*) FROM profiles WHERE email="' + fields.email + '";', function(err, results) {
@@ -84,9 +94,15 @@ app.post('/signup', function(req, res) {
               text: msg + addr,
               html: msgHtml
             }, function(err, reply) {
-              if (err) throw err;
-              res.write('<html><body><p>Verification Email Sent</p></body></html>');
-              res.end();
+              if (!err) {
+                res.write('<html><body><p>Verification Email Sent</p></body></html>');
+                res.end();
+              }
+              else {
+                //error
+                res.write('<html><body><p>An Unknown Error Occured (did you use a valid email?).</p><p>' + err + '</p></body></html>');
+                res.end();
+              }
             });
           });
         });

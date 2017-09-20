@@ -34,6 +34,18 @@ br {
   padding-bottom: .5rem;
 }
 
+.warning {
+  flex: 1;
+  display: none;
+  flex-direction: row;
+  justify-content: center;
+  align-content: flex-end;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #ff0000;
+  background: #ff6666;
+}
+
 .centered {
   text-align: center;
 }

@@ -14,8 +14,8 @@ CREATE TABLE profiles (
   email VARCHAR(50) UNIQUE,
   salt VARCHAR(50),
   hash VARCHAR(50),
-  username VARCHAR(50),
-  firstname VARCHAR(50),
-  lastname VARCHAR(50),
-  biography VARCHAR(5000)
+  username VARCHAR(50) NOT NULL DEFAULT '',
+  firstname VARCHAR(50) NOT NULL DEFAULT '',
+  lastname VARCHAR(50) NOT NULL DEFAULT '',
+  biography VARCHAR(5000) NOT NULL DEFAULT ''
 );
