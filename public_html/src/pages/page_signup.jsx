@@ -21,7 +21,6 @@ class PageSignup extends React.Component {
   }
 
   myClick(e) {
-return;
     if (!validateEmail(this.state.email)) {
       e.preventDefault();
       this.setWarning('Invalid Email');
