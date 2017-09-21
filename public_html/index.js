@@ -163,6 +163,12 @@ app.post('/login', function(req, res) {
     db.query('SELECT email, salt, hash FROM profiles WHERE email="' + fields.email + '";', function(err, results) {
       if (err) throw err;
 
+      if (results.length === 0) {
+        res.status(400).write('incorrect email');
+        res.end();
+        return;
+      }
+
       //gen a new hash hash
       bcrypt.hash(fields.password, results[0].salt, function(err, hash) {
         if (err) throw err;

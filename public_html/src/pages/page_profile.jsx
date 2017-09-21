@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 class PageProfile extends React.Component {
   constructor(props) {
@@ -35,6 +36,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+//this line breaks everything
 PageProfile = connect(mapStoreToProps, mapDispatchToProps)(PageProfile);
 
-export default PageProfile;
+export default withRouter(PageProfile);

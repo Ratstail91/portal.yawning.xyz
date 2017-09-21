@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 class PageNotFound extends React.Component {
   constructor(props) {
@@ -25,4 +25,4 @@ class PageNotFound extends React.Component {
   };
 }
 
-export default PageNotFound;
+export default withRouter(PageNotFound);

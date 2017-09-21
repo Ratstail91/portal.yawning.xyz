@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { validateEmail } from '../../scripts/utilities.js';
 
 class PageSignup extends React.Component {
@@ -129,4 +129,4 @@ function mapDispatchToProps(dispatch) {
 
 PageSignup = connect(mapStoreToProps, mapDispatchToProps)(PageSignup);
 
-export default PageSignup;
+export default withRouter(PageSignup);

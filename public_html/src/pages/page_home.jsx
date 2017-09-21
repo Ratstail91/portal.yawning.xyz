@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 class PageHome extends React.Component {
   constructor(props) {
@@ -54,4 +54,4 @@ function mapDispatchToProps(dispatch) {
 
 PageHome = connect(mapStoreToProps, mapDispatchToProps)(PageHome);
 
-export default PageHome;
+export default withRouter(PageHome);
