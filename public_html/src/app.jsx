@@ -1,5 +1,6 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 //include other panels
 import PageHome from './pages/page_home.jsx';
@@ -29,20 +30,41 @@ class App extends React.Component {
 
     return (
       <div style={style} className='central'>
-        <Switch>
-          <Route exact path='/' component={PageHome} />
-          <Route path='/login' component={PageLogin} />
-          <Route path='/messages' component={PageMessages} />
-          <Route path='/passwordchange' component={PagePasswordChange} />
-          <Route path='/passwordrecovery' component={PagePasswordRecovery} />
-          <Route path='/profile' component={PageProfile} />
-          <Route path='/signup' component={PageSignup} />
-          <Route path='*' component={PageNotFound} />
-        </Switch>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path='/' component={PageHome} />
+            <Route path='/login' component={PageLogin} />
+            <Route path='/messages' component={PageMessages} />
+            <Route path='/passwordchange' component={PagePasswordChange} />
+            <Route path='/passwordrecovery' component={PagePasswordRecovery} />
+            <Route path='/profile' component={PageProfile} />
+            <Route path='/signup' component={PageSignup} />
+            <Route path='*' component={PageNotFound} />
+          </Switch>
+        </BrowserRouter>
         <FooterPanel />
       </div>
     );
   }
 }
+
+//redux
+App.contextTypes = {
+  store: React.PropTypes.object
+};
+
+function mapStoreToProps(store) {
+  return {
+    store: store
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    //
+  };
+}
+
+App = connect(mapStoreToProps, mapDispatchToProps)(App);
 
 export default App;

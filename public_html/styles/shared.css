@@ -25,7 +25,7 @@ br {
 }
 
 .central {
-  padding: 0 5px;
+  padding: 0 10px;
   height: 100vh;
   background: #ffd3f3;
 }
@@ -78,18 +78,16 @@ h1 {
   justify-content: flex-start;
 }
 
-@media screen and (max-width: 480px) {
-  .loginForm div .flexLeft button {
-    flex: 1;
-  }
+.loginForm div .flexLeft button {
+  flex: 1;
 }
 
 @media screen and (min-width: 480px) {
-  .loginForm div input {
+  .loginForm div label {
     flex: 2;
   }
 
-  .loginForm div .flexLeft {
+  .loginForm div .pad {
     flex: 2;
   }
 }

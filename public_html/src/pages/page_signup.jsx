@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { validateEmail } from '../../scripts/utilities.js';
 
@@ -108,5 +109,24 @@ class PageSignup extends React.Component {
     );
   };
 }
+
+//redux
+PageSignup.contextTypes = {
+  store: React.PropTypes.object
+};
+
+function mapStoreToProps(store) {
+  return {
+    store: store
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    //
+  };
+}
+
+PageSignup = connect(mapStoreToProps, mapDispatchToProps)(PageSignup);
 
 export default PageSignup;

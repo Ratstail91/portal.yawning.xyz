@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 class PageHome extends React.Component {
@@ -33,5 +34,24 @@ class PageHome extends React.Component {
     );
   };
 }
+
+//redux
+PageHome.contextTypes = {
+  store: React.PropTypes.object
+};
+
+function mapStoreToProps(store) {
+  return {
+    store: store
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    //
+  };
+}
+
+PageHome = connect(mapStoreToProps, mapDispatchToProps)(PageHome);
 
 export default PageHome;

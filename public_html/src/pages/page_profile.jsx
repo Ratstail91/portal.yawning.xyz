@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 class PageProfile extends React.Component {
   constructor(props) {
@@ -16,5 +17,24 @@ class PageProfile extends React.Component {
     );
   };
 }
+
+//redux
+PageProfile.contextTypes = {
+  store: React.PropTypes.object
+};
+
+function mapStoreToProps(state) {
+  return {
+    store: store
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    //
+  };
+}
+
+PageProfile = connect(mapStoreToProps, mapDispatchToProps)(PageProfile);
 
 export default PageProfile;
