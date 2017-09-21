@@ -45,6 +45,7 @@ class PageLogin extends React.Component {
 
             //login and switch to the profile page
             this.props.login(json.email, json.token);
+            this.props.redirect('/profile', this.props.history);
           }
           else if (xhttp.status === 400) {
             this.setWarning(xhttp.responseText);
