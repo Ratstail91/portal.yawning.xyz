@@ -1,5 +1,5 @@
 module.exports = {
-  entry: './src/index.jsx',
+  entry: './src/index_dev.jsx',
   output: {
     path: __dirname,
     filename: 'app.bundle.js'
@@ -9,6 +9,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         loader: 'babel-loader',
+        exclude: /node_modules/,
         query: {
           presets: ['env', 'react']
         }
