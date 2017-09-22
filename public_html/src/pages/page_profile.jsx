@@ -24,7 +24,7 @@ PageProfile.contextTypes = {
   store: React.PropTypes.object
 };
 
-function mapStoreToProps(state) {
+function mapStoreToProps(store) {
   return {
     store: store
   };
