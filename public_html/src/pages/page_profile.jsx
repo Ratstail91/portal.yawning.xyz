@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { logout } from '../actions.js';
 
 class PageProfile extends React.Component {
   constructor(props) {
@@ -21,7 +22,10 @@ class PageProfile extends React.Component {
     };
 
     return (
-      <p style={style}>profile</p>
+      <div style={style}>
+        <p>profile</p>
+        <Link to="/" onClick={this.props.logout}>Logout</Link>
+      </div>
     );
   };
 }
@@ -41,11 +45,10 @@ function mapStoreToProps(store) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    //
+    logout: () => { dispatch(logout()); }
   };
 }
 
-//this line breaks everything
 PageProfile = connect(mapStoreToProps, mapDispatchToProps)(PageProfile);
 
 export default withRouter(PageProfile);
