@@ -1,6 +1,5 @@
 //list of actions
 export const CLEAR_STORE = 'CLEAR_STORE';
-export const REDIRECT = 'REDIRECT';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const STORE_PROFILE = 'STORE_PROFILE';
@@ -9,14 +8,6 @@ export const STORE_PROFILE = 'STORE_PROFILE';
 export function clearStore() {
   return {
     type: CLEAR_STORE
-  };
-}
-
-export function redirect(url, history) {
-  return {
-    type: REDIRECT,
-    url: url,
-    history: history
   };
 }
 

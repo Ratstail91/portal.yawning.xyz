@@ -6,12 +6,13 @@ import thunk from 'redux-thunk';
 
 import App from './app.jsx';
 import reducer from './reducers.js';
-import DevTools from './dev_tools.js';
+import DevTools from './dev_tools.jsx';
 
 var store = createStore(
   reducer,
   compose(
-    applyMiddleware(thunk)
+    applyMiddleware(thunk),
+    DevTools.instrument()
   )
 );
 

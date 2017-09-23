@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { login, redirect } from '../actions.js';
+import { login } from '../actions.js';
 import { validateEmail } from '../../scripts/utilities.js';
 
 class PageLogin extends React.Component {
@@ -45,7 +45,7 @@ class PageLogin extends React.Component {
 
             //login and switch to the profile page
             this.props.login(json.email, json.token);
-            this.props.redirect('/profile', this.props.history);
+            this.props.history.push('/profile');
           }
           else if (xhttp.status === 400) {
             this.setWarning(xhttp.responseText);
@@ -132,8 +132,7 @@ function mapStoreToProps(store) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: (email, token) => { dispatch(login(email, token)); },
-    redirect: (url, history) => { dispatch(redirect(url, history)); }
+    login: (email, token) => { dispatch(login(email, token)); }
   };
 }
 

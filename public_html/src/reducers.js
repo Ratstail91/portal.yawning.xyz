@@ -1,4 +1,4 @@
-import { CLEAR_STORE, REDIRECT, LOGIN, LOGOUT, STORE_PROFILE } from './actions.js';
+import { CLEAR_STORE, LOGIN, LOGOUT, STORE_PROFILE } from './actions.js';
 
 function createStore() {
   return {
@@ -28,11 +28,6 @@ export default function reducer(store, action) {
   switch(action.type) {
     case CLEAR_STORE:
       return createStore();
-
-    case REDIRECT:
-      //NOTE: currently doesn't touch the state
-      action.history.push(action.url);
-      return newStore;
 
     case LOGIN:
       //ensure the state is fresh
