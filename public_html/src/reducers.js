@@ -48,6 +48,9 @@ export default function reducer(store, action) {
       newStore.profile.biography = action.biography;
       return newStore;
 
+    case 'LOAD_STORED_STATE':
+      return action.storedState;
+
     default:
       return store;
   }

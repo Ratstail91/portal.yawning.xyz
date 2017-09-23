@@ -14,6 +14,13 @@ class PageLogin extends React.Component {
     };
   };
 
+  componentDidMount() {
+    //redirect if logged in (back to home)
+    if (this.props.token) {
+      this.props.history.push('/');
+    }
+  }
+
   //client-side validation
   setWarning(s) {
     this.setState({
@@ -121,12 +128,14 @@ class PageLogin extends React.Component {
 
 //redux
 PageLogin.contextTypes = {
-  store: React.PropTypes.object
+  store: React.PropTypes.object,
+  token: React.PropTypes.number
 };
 
 function mapStoreToProps(store) {
   return {
-    store: store
+    store: store,
+    token: store.token
   };
 }
 

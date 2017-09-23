@@ -8,6 +8,13 @@ class PageHome extends React.Component {
     this.state = {};
   };
 
+  componentDidMount() {
+    //redirect if logged in (onwards to profile)
+    if (this.props.token) {
+      this.props.history.push('/profile');
+    }
+  }
+
   render() {
     var style = {
       flex: '1'
@@ -37,12 +44,14 @@ class PageHome extends React.Component {
 
 //redux
 PageHome.contextTypes = {
-  store: React.PropTypes.object
+  store: React.PropTypes.object,
+  token: React.PropTypes.number
 };
 
 function mapStoreToProps(store) {
   return {
-    store: store
+    store: store,
+    token: store.token
   };
 }
 
