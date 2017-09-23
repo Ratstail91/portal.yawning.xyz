@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "forever start index.js",
-    "restart": "forever restart index.js",
+    "start": "forever -o forever.log -e error.log start index.js",
+    "restart": "forever -o forever.log -e error.log restart index.js",
     "stop": "forever stop index.js",
     "test": "xvfb-run -a karma start karma.conf.js",
     "node": "node index.js",
