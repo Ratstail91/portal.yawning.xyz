@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 //include other panels
@@ -40,24 +39,5 @@ class App extends React.Component {
     );
   }
 }
-
-//redux
-App.contextTypes = {
-  store: React.PropTypes.object
-};
-
-function mapStoreToProps(store) {
-  return {
-    store: store
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    //
-  };
-}
-
-App = connect(mapStoreToProps, mapDispatchToProps)(App);
 
 export default App;

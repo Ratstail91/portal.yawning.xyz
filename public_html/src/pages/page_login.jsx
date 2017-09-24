@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { login } from '../actions.js';
+import { login } from '../reducers/profile.js';
 import { validateEmail } from '../../scripts/utilities.js';
 
 class PageLogin extends React.Component {
@@ -50,9 +50,9 @@ class PageLogin extends React.Component {
           if (xhttp.status === 200) {
             var json = JSON.parse(xhttp.responseText);
 
-            //login and switch to the profile page
+            //login and switch to the root page
             this.props.login(json.email, json.token);
-            this.props.history.push('/profile');
+            this.props.history.push('/');
           }
           else if (xhttp.status === 400) {
             this.setWarning(xhttp.responseText);
@@ -133,7 +133,7 @@ PageLogin.contextTypes = {
 function mapStoreToProps(store) {
   return {
     store: store,
-    token: store.token
+    token: store.profile.token
   };
 }
 

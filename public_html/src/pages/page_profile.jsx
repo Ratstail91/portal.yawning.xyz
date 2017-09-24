@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { logout } from '../actions.js';
+import { logout } from '../reducers/profile.js';
 
 class PageProfile extends React.Component {
   constructor(props) {
@@ -39,7 +39,7 @@ PageProfile.contextTypes = {
 function mapStoreToProps(store) {
   return {
     store: store,
-    token: store.token
+    token: store.profile.token
   };
 }
 

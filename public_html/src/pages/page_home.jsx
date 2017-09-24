@@ -51,7 +51,7 @@ PageHome.contextTypes = {
 function mapStoreToProps(store) {
   return {
     store: store,
-    token: store.token
+    token: store.profile.token
   };
 }
 
