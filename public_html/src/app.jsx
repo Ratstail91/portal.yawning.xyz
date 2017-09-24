@@ -21,15 +21,8 @@ class App extends React.Component {
   }
 
   render() {
-    var style = {
-      flex: '1',
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: '100vh'
-    };
-
     return (
-      <div style={style} className='central'>
+      <div className='central'>
         <BrowserRouter>
           <Switch>
             <Route exact path='/' component={PageHome} />

@@ -113,9 +113,7 @@ class PageLogin extends React.Component {
           </div>
           <div>
             <div className='pad' />
-            <div className='flexLeft'>
-              <button type='submit'>Login</button>
-            </div>
+            <button type='submit'>Login</button>
           </div>
         </form>
         <br />

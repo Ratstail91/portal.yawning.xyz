@@ -104,9 +104,7 @@ class PageSignup extends React.Component {
           </div>
           <div>
             <div className='pad' />
-            <div className='flexLeft'>
-              <button type='submit'>Sign Up</button>
-            </div>
+            <button type='submit'>Sign Up</button>
           </div>
         </form>
         <br />

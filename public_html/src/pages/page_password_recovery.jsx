@@ -22,9 +22,7 @@ class PagePasswordRecovery extends React.Component {
           </div>
           <div>
             <div className='pad' />
-            <div className='flexLeft'>
-              <button type='submit'>Submit</button>
-            </div>
+            <button type='submit'>Submit</button>
           </div>
         </form>
         <br />
