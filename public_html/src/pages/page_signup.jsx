@@ -75,16 +75,12 @@ class PageSignup extends React.Component {
 
   //render
   render() {
-    var style = {
-      flex: '1'
-    };
-
     var warningStyle = {
       display: this.state.warning.length > 0 ? 'flex' : 'none'
     };
 
     return (
-      <div style={style}>
+      <div className='page'>
         <h1 className='centered'>Sign Up</h1>
         <div className='warning' style={warningStyle}>
           <p>{this.state.warning}</p>

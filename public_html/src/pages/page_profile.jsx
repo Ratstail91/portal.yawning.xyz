@@ -1,12 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { logout } from '../reducers/profile.js';
+import OptionsPanel from '../panels/options_panel.jsx';
 
 class PageProfile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      editing: false,
+      warning: ''
+    };
   };
 
   componentDidMount() {
@@ -16,15 +19,42 @@ class PageProfile extends React.Component {
     }
   }
 
+  setWarning(s) {
+    this.setState({
+      warning: s
+    });
+  }
+
   render() {
-    var style = {
+    //styles
+    var warningStyle = {
+      display: this.state.warning.length > 0 ? 'flex' : 'none'
+    };
+
+    var padStyle = {
       flex: '1'
     };
 
+    //custom display
+    var customLinks = (
+      <div>
+        <p><Link to='/passwordchange'>Change Password</Link></p>
+      </div>
+    );
+
     return (
-      <div style={style}>
-        <p>profile</p>
-        <Link to="/" onClick={this.props.logout}>Logout</Link>
+      <div className='page'>
+        <h1 className='centered'>Profile</h1>
+        <div className='warning' style={warningStyle}>
+          <p>{this.state.warning}</p>
+        </div>
+        <div className="sexyLayout">
+          <div>
+            <OptionsPanel custom={customLinks} />
+            <div style={padStyle}></div>
+          </div>
+          <div style={{flex: '1', borderStyle: 'solid'}}>Placeholder</div>
+        </div>
       </div>
     );
   };
@@ -45,7 +75,7 @@ function mapStoreToProps(store) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    logout: () => { dispatch(logout()); }
+    //
   };
 }
 

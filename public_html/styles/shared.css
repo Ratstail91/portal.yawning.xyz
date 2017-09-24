@@ -48,6 +48,13 @@ br {
   padding-bottom: .5rem;
 }
 
+.page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
 /* warning message */
 .warning {
   flex: 1;
@@ -101,6 +108,20 @@ br {
   }
 }
 
+/* sexy layout */
+.sexyLayout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+@media screen and (min-width: 480px) {
+  .sexyLayout {
+    flex-direction: row;
+  }
+}
+
 /* layer display (similar to loginForm above) */
 .layer {
   flex: 1;
@@ -114,5 +135,3 @@ br {
   flex: 1;
 }
 
-/* column display */
-/* TODO: column display */

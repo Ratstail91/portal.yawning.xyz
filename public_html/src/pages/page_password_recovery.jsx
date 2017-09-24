@@ -8,12 +8,8 @@ class PagePasswordRecovery extends React.Component {
   };
 
   render() {
-    var style = {
-      flex: '1'
-    };
-
     return (
-      <div style={style}>
+      <div className='page'>
         <h1 className='centered'>Reset Password</h1>
         <form action='/passwordrecovery' method='post' className='loginForm'>
           <div>

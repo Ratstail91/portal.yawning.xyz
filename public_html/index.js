@@ -26,8 +26,9 @@ db.connect(function(err) {
 });
 
 //static directories
-app.use('/styles', express.static(__dirname + '/styles'));
+app.use('/avatars', express.static(__dirname + '/avatars'));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
+app.use('/styles', express.static(__dirname + '/styles'));
 
 //necessary files
 app.get('/', function(req, res) {

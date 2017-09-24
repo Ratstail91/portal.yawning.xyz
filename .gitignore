@@ -13,3 +13,4 @@ logs/**
 
 #output files
 *.bundle.js
+/**/avatars/*
