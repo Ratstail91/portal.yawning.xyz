@@ -19,10 +19,11 @@ export function logout() {
   };
 }
 
-export function storeProfile(email, username, realname, biography) {
+export function storeProfile(email, avatar, username, realname, biography) {
   return {
     type: STORE_PROFILE,
     email: email,
+    avatar: avatar,
     username: username,
     realname: realname,
     biography: biography
@@ -39,6 +40,7 @@ export function clearProfile() {
 var initialProfile = {
   token: 0,
   email: '',
+  avatar: '',
   username: '',
   realname: '',
   biography: ''
@@ -59,6 +61,7 @@ export function profileReducer(store = initialProfile, action) {
 
     case STORE_PROFILE:
       store.email = action.email;
+      store.avatar = action.avatar;
       store.username = action.username;
       store.realname = action.realname;
       store.biography = action.biography;

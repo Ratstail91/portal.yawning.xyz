@@ -31,14 +31,36 @@ class PageProfile extends React.Component {
       display: this.state.warning.length > 0 ? 'flex' : 'none'
     };
 
-    var padStyle = {
-      flex: '1'
-    };
-
-    //custom display
+    //custom options display
     var customLinks = (
       <div>
         <p><Link to='/passwordchange'>Change Password</Link></p>
+        <p><Link to='#'>Edit Profile</Link></p>
+      </div>
+    );
+
+    //utilities
+    var makeRow = function(left, right) {
+      return (
+        <tr>
+          <td className='right'>{left}</td>
+          <td>{right}</td>
+        </tr>
+      );
+    }
+
+    //standard display
+    var avatar = '/avatars/' + (this.props.avatar ? this.props.avatar : 'default.png' );
+
+    var mainPanel = (
+      <div className='page'>
+        <img src={avatar} className='avatarNormal' />
+        <table className='flexTable'>
+          {makeRow('Email:', this.props.email)}
+          {makeRow('Username:', this.props.username)}
+          {makeRow('Real Name:', this.props.realname)}
+          {makeRow('Biography:', this.props.biography)}
+        </table>
       </div>
     );
 
@@ -51,9 +73,9 @@ class PageProfile extends React.Component {
         <div className="sexyLayout">
           <div>
             <OptionsPanel custom={customLinks} />
-            <div style={padStyle}></div>
+            <div style={{flex: '1'}}></div>
           </div>
-          <div style={{flex: '1', borderStyle: 'solid'}}>Placeholder</div>
+          {mainPanel}
         </div>
       </div>
     );
@@ -63,13 +85,23 @@ class PageProfile extends React.Component {
 //redux
 PageProfile.contextTypes = {
   store: React.PropTypes.object,
-  token: React.PropTypes.number
+  token: React.PropTypes.number,
+  email: React.PropTypes.string,
+  avatar: React.PropTypes.string,
+  username: React.PropTypes.string,
+  realname: React.PropTypes.string,
+  biography: React.PropTypes.string
 };
 
 function mapStoreToProps(store) {
   return {
     store: store,
-    token: store.profile.token
+    token: store.profile.token,
+    email: store.profile.email,
+    avatar: store.profile.avatar,
+    username: store.profile.username,
+    realname: store.profile.realname,
+    biography: store.profile.biography
   };
 }
 

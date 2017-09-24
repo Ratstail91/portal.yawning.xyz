@@ -27,6 +27,10 @@ br {
   text-align: center;
 }
 
+.right {
+  text-align: right;
+}
+
 /* central display */
 .central {
   flex: 1;
@@ -36,6 +40,7 @@ br {
   padding: 0 10px;
   height: 100vh;
   background: #ffd3f3;
+  overflow-y: auto;
 }
 
 @media screen and (min-width: 480px) {
@@ -49,7 +54,7 @@ br {
 }
 
 .page {
-  flex: 1;
+  flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -87,14 +92,7 @@ br {
   flex: 1;
 }
 
-.loginForm div .flexLeft {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-}
-
-.loginForm div .flexLeft button {
+.loginForm div button {
   flex: 1;
 }
 
@@ -122,16 +120,14 @@ br {
   }
 }
 
-/* layer display (similar to loginForm above) */
-.layer {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-content: flex-start;
+/* master of the four elements */
+.avatarNormal {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
 }
 
-.item {
+/* flex table */
+.flexTable {
   flex: 1;
 }
-

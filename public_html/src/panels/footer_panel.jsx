@@ -5,6 +5,7 @@ class FooterPanel extends React.Component {
     var style = {
       flex: '0 1 auto',
       justifySelf: 'flex-end',
+      paddingTop: '2em',
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'center',
