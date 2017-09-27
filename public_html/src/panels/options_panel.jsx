@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { logout } from '../reducers/profile.js';
 
 class OptionsPanel extends React.Component {
@@ -53,9 +54,10 @@ class OptionsPanel extends React.Component {
 }
 
 //redux
-OptionsPanel.contextTypes = {
-  store: React.PropTypes.object,
-  token: React.PropTypes.number
+OptionsPanel.propTypes = {
+  store: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
+  custom: PropTypes.node
 };
 
 function mapStoreToProps(store) {

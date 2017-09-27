@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { validateEmail } from '../../scripts/utilities.js';
 
 class PageSignup extends React.Component {
@@ -112,9 +113,10 @@ class PageSignup extends React.Component {
 }
 
 //redux
-PageSignup.contextTypes = {
-  store: React.PropTypes.object,
-  token: React.PropTypes.number
+PageSignup.propTypes = {
+  store: PropTypes.object.isRequired,
+  token: PropTypes.number,
+  history: PropTypes.object.isRequired
 };
 
 function mapStoreToProps(store) {

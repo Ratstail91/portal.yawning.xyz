@@ -21,13 +21,21 @@ module.exports = function(config) {
     webpackMiddleware: {
       noInfo: true
     },
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress', 'verbose', 'coverage'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
     autoWatch: false,
     browsers: ['Firefox', 'Chrome'],
     singleRun: true,
-    concurrency: Infinity
+    concurrency: Infinity,
+    client: {
+      captureConsole: true
+    },
+    browserConsoleLogOptions: {
+      level: 'log',
+      format: '%b %T: %m',
+      terminal: true
+    },
+    logLevel: config.LOG_LOG
   })
 }

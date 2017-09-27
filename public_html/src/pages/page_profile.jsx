@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import OptionsPanel from '../panels/options_panel.jsx';
 
 class PageProfile extends React.Component {
@@ -56,10 +57,12 @@ class PageProfile extends React.Component {
       <div className='page'>
         <img src={avatar} className='avatarNormal' />
         <table className='flexTable'>
-          {makeRow('Email:', this.props.email)}
-          {makeRow('Username:', this.props.username)}
-          {makeRow('Real Name:', this.props.realname)}
-          {makeRow('Biography:', this.props.biography)}
+          <tbody>
+            {makeRow('Email:', this.props.email)}
+            {makeRow('Username:', this.props.username)}
+            {makeRow('Real Name:', this.props.realname)}
+            {makeRow('Biography:', this.props.biography)}
+          </tbody>
         </table>
       </div>
     );
@@ -83,14 +86,15 @@ class PageProfile extends React.Component {
 }
 
 //redux
-PageProfile.contextTypes = {
-  store: React.PropTypes.object,
-  token: React.PropTypes.number,
-  email: React.PropTypes.string,
-  avatar: React.PropTypes.string,
-  username: React.PropTypes.string,
-  realname: React.PropTypes.string,
-  biography: React.PropTypes.string
+PageProfile.propTypes = {
+  store: PropTypes.object.isRequired,
+  token: PropTypes.number,
+  history: PropTypes.object.isRequired,
+  email: PropTypes.string.isRequired,
+  avatar: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
+  realname: PropTypes.string.isRequired,
+  biography: PropTypes.string.isRequired
 };
 
 function mapStoreToProps(store) {

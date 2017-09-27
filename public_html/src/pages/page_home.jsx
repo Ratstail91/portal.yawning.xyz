@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class PageHome extends React.Component {
   constructor(props) {
@@ -40,9 +41,10 @@ class PageHome extends React.Component {
 }
 
 //redux
-PageHome.contextTypes = {
-  store: React.PropTypes.object,
-  token: React.PropTypes.number
+PageHome.propTypes = {
+  store: PropTypes.object.isRequired,
+  token: PropTypes.number,
+  history: PropTypes.object.isRequired
 };
 
 function mapStoreToProps(store) {
