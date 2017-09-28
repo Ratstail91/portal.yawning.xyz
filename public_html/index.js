@@ -161,11 +161,11 @@ app.post('/login', function(req, res) {
     }
 
     //find this email's information
-    db.query('SELECT email, salt, hash FROM profiles WHERE email="' + fields.email + '";', function(err, results) {
+    db.query('SELECT id, salt, hash FROM profiles WHERE email="' + fields.email + '";', function(err, results) {
       if (err) throw err;
 
       if (results.length === 0) {
-        res.status(400).write('incorrect email');
+        res.status(400).write('Incorrect Email Or Password');
         res.end();
         return;
       }
@@ -176,7 +176,7 @@ app.post('/login', function(req, res) {
 
         //compare the calculated hash to the stored hash
         if (hash !== results[0].hash) {
-          res.status(400).write('Incorrect Password');
+          res.status(400).write('Incorrect Email Or Password');
           res.end();
           return;
         }
@@ -192,7 +192,7 @@ app.post('/login', function(req, res) {
 
             //send the JSON containing the email and token
             res.status(200).json({
-              email: results[0].email,
+              id: results[0].id,
               token: rand
             });
             res.end();

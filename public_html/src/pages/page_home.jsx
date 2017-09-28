@@ -11,7 +11,7 @@ class PageHome extends React.Component {
 
   componentDidMount() {
     //redirect if logged in (onwards to profile)
-    if (this.props.token) {
+    if (this.props.id) {
       this.props.history.push('/profile');
     }
   }
@@ -43,14 +43,14 @@ class PageHome extends React.Component {
 //redux
 PageHome.propTypes = {
   store: PropTypes.object.isRequired,
-  token: PropTypes.number,
+  id: PropTypes.number,
   history: PropTypes.object.isRequired
 };
 
 function mapStoreToProps(store) {
   return {
     store: store,
-    token: store.profile.token
+    id: store.profile.id
   };
 }
 

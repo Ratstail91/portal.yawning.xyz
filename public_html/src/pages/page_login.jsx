@@ -17,7 +17,7 @@ class PageLogin extends React.Component {
 
   componentDidMount() {
     //redirect if logged in (back to home)
-    if (this.props.token) {
+    if (this.props.id) {
       this.props.history.push('/');
     }
   }
@@ -52,7 +52,7 @@ class PageLogin extends React.Component {
             var json = JSON.parse(xhttp.responseText);
 
             //login and switch to the root page
-            this.props.login(json.email, json.token);
+            this.props.login(json.id, json.token);
             this.props.history.push('/');
           }
           else if (xhttp.status === 400) {
@@ -124,7 +124,7 @@ class PageLogin extends React.Component {
 //redux
 PageLogin.propTypes = {
   store: PropTypes.object.isRequired,
-  token: PropTypes.number,
+  id: PropTypes.number,
   history: PropTypes.object.isRequired,
   login: PropTypes.func.isRequired
 };
@@ -132,13 +132,13 @@ PageLogin.propTypes = {
 function mapStoreToProps(store) {
   return {
     store: store,
-    token: store.profile.token
+    id: store.profile.id
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: (email, token) => { dispatch(login(email, token)); }
+    login: (id, token) => { dispatch(login(id, token)); }
   };
 }
 

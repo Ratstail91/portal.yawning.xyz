@@ -15,7 +15,7 @@ class PageProfile extends React.Component {
 
   componentDidMount() {
     //redirect if NOT logged in (back to home)
-    if (!this.props.token) {
+    if (!this.props.id) {
       this.props.history.push('/');
     }
   }
@@ -37,6 +37,7 @@ class PageProfile extends React.Component {
       <div>
         <p><Link to='/passwordchange'>Change Password</Link></p>
         <p><Link to='#'>Edit Profile</Link></p>
+        <p>ID: {this.props.id}</p>
       </div>
     );
 
@@ -88,8 +89,9 @@ class PageProfile extends React.Component {
 //redux
 PageProfile.propTypes = {
   store: PropTypes.object.isRequired,
-  token: PropTypes.number,
   history: PropTypes.object.isRequired,
+  id: PropTypes.number.isRequired,
+  token: PropTypes.number.isRequired,
   email: PropTypes.string.isRequired,
   avatar: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
@@ -100,6 +102,7 @@ PageProfile.propTypes = {
 function mapStoreToProps(store) {
   return {
     store: store,
+    id: store.profile.id,
     token: store.profile.token,
     email: store.profile.email,
     avatar: store.profile.avatar,

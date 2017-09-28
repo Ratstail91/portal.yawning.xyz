@@ -5,10 +5,10 @@ export const STORE_PROFILE = 'STORE_PROFILE';
 export const CLEAR_PROFILE = 'CLEAR_PROFILE';
 
 //action creators
-export function login(email, token) {
+export function login(id, token) {
   return {
     type: LOGIN,
-    email: email,
+    id: id,
     token: token
   };
 }
@@ -38,6 +38,7 @@ export function clearProfile() {
 
 //initial store
 var initialProfile = {
+  id: 0,
   token: 0,
   email: '',
   avatar: '',
@@ -52,20 +53,20 @@ export function profileReducer(store = initialProfile, action) {
   switch(action.type) {
     case LOGIN:
       var newStore = JSON.parse(JSON.stringify(initialProfile));
+      newStore.id = action.id;
       newStore.token = action.token;
-      newStore.email = action.email;
       return newStore;
 
     case LOGOUT:
       return initialProfile;
 
     case STORE_PROFILE:
-      store.email = action.email;
-      store.avatar = action.avatar;
-      store.username = action.username;
-      store.realname = action.realname;
-      store.biography = action.biography;
-      return newStore;
+      store.email = action.email || store.email;
+      store.avatar = action.avatar || store.avatar;
+      store.username = action.username || store.username;
+      store.realname = action.realname || store.realname;
+      store.biography = action.biography || store.biography;
+      return store;
 
     case CLEAR_PROFILE:
       return initialProfile;
