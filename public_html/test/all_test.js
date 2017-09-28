@@ -35,7 +35,7 @@ class MemoryApp extends React.Component {
             <Route exact path='/' component={PageHome} />
             <Route path='/login' component={PageLogin} />
             <Route path='/passwordrecovery' component={PagePasswordRecovery} />
-            <Route path='/profile' component={PageProfile} />
+            <Route path='/profile/:profileId?' component={PageProfile} />
             <Route path='/signup' component={PageSignup} />
             <Route path='*' component={PageNotFound} />
           </Switch>

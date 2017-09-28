@@ -3,12 +3,20 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import OptionsPanel from '../panels/options_panel.jsx';
+import { storeProfile } from '../reducers/profile.js';
 
 class PageProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loaded: false,
       editing: false,
+      id: 0,
+      email: '',
+      avatar: '',
+      username: '',
+      realname: '',
+      biography: '',
       warning: ''
     };
   };
@@ -18,12 +26,89 @@ class PageProfile extends React.Component {
     if (!this.props.id) {
       this.props.history.push('/');
     }
+
+    //load the data
+    if (!this.state.loaded) {
+      this.requestProfile(
+        this.props.match.params.profileId ||
+        this.props.id
+      );
+    }
   }
 
   setWarning(s) {
     this.setState({
       warning: s
     });
+  }
+
+  requestProfile(profileId) {
+    //form data
+    var formData = new FormData();
+    formData.append('id', this.props.id);
+    formData.append('token', this.props.token);
+    formData.append('profileId', profileId);
+
+    //callback
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (xhttp.readyState === 4) {
+        if (xhttp.status === 200) {
+          var json = JSON.parse(xhttp.responseText);
+          this.storeProfile(
+            profileId,
+            json.email,
+            json.avatar,
+            json.username,
+            json.realname,
+            json.biography
+          );
+
+          this.setState({loaded: true});
+        }
+        else if (xhttp.ststus === 400) {
+          this.setWarning(xhttp.responseText);
+        }
+        else if (xhttp.status === 404) {
+          this.props.history.push('/404');
+        }
+      }
+    }.bind(this);
+
+    //send
+    xhttp.open('POST', '/profile', true);
+    xhttp.send(formData);
+  }
+
+  storeProfile(profileId, email, avatar, username, realname, biography) {
+    if (profileId == this.props.id) {
+      this.setState({
+        id: profileId,
+        email: email || '(not set)',
+        avatar: avatar,
+        username: username || '(not set)',
+        realname: realname || '(not set)',
+        biography: biography || '(not set)'
+      });
+
+      this.props.storeProfile(
+        email,
+        avatar,
+        username,
+        realname,
+        biography
+      );
+    }
+    else {
+      this.setState({
+        id: profileId,
+        email: email || '(hidden)',
+        avatar: avatar || 'private.png',
+        username: username || '(hidden)',
+        realname: realname || '(hidden)',
+        biography: biography || '(hidden)'
+      });
+    }
   }
 
   render() {
@@ -37,7 +122,8 @@ class PageProfile extends React.Component {
       <div>
         <p><Link to='/passwordchange'>Change Password</Link></p>
         <p><Link to='#'>Edit Profile</Link></p>
-        <p>ID: {this.props.id}</p>
+        <p>Your ID: {this.props.id}</p>
+        <p>Profile ID: {this.state.id}</p>
       </div>
     );
 
@@ -52,17 +138,17 @@ class PageProfile extends React.Component {
     }
 
     //standard display
-    var avatar = '/avatars/' + (this.props.avatar ? this.props.avatar : 'default.png' );
+    var avatar = '/avatars/' + (this.state.avatar ? this.state.avatar : 'default.png' );
 
     var mainPanel = (
       <div className='page'>
         <img src={avatar} className='avatarNormal' />
         <table className='flexTable'>
           <tbody>
-            {makeRow('Email:', this.props.email)}
-            {makeRow('Username:', this.props.username)}
-            {makeRow('Real Name:', this.props.realname)}
-            {makeRow('Biography:', this.props.biography)}
+            {makeRow('Email:', this.state.email)}
+            {makeRow('Username:', this.state.username)}
+            {makeRow('Real Name:', this.state.realname)}
+            {makeRow('Biography:', this.state.biography)}
           </tbody>
         </table>
       </div>
@@ -96,7 +182,8 @@ PageProfile.propTypes = {
   avatar: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   realname: PropTypes.string.isRequired,
-  biography: PropTypes.string.isRequired
+  biography: PropTypes.string.isRequired,
+  storeProfile: PropTypes.func.isRequired
 };
 
 function mapStoreToProps(store) {
@@ -114,7 +201,9 @@ function mapStoreToProps(store) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    //
+    storeProfile: (email, avatar, username, realname, biography) => {
+      dispatch(storeProfile(email, avatar, username, realname, biography));
+    }
   };
 }
 

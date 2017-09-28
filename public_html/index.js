@@ -1,3 +1,28 @@
+//TODO: move to a separate file
+//(SELF, FRIEND, GROUP, PUBLIC, BLOCKED)
+const SELF = 4;
+const FRIEND = 3;
+const GROUP = 2;
+const PUBLIC = 1;
+const BLOCKED = 0;
+
+//utility function
+function getRelationLevel(db, id, token, profileId, cb) {
+  //TODO: expand this
+  db.query('SELECT lastToken FROM profiles WHERE id=' + id + ';', function(err, results) {
+    if (err) return cb(err);
+    if (results[0].lastToken != token) return cb('id and token don\'t match');
+
+    db.query('SELECT id FROM profiles WHERE id=' + profileId + ';', function(err, results) {
+      if (err) return cb(err);
+      if (results.length === 0) return cb(404);
+      if (id == profileId) return cb(undefined, SELF);
+      return cb(undefined, PUBLIC);
+    });
+  });
+}
+
+//includes
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
@@ -29,15 +54,6 @@ db.connect(function(err) {
 app.use('/avatars', express.static(__dirname + '/avatars'));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
 app.use('/styles', express.static(__dirname + '/styles'));
-
-//necessary files
-app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/index.html');
-});
-
-app.get('/app.bundle.js', function(req, res) {
-  res.sendFile(__dirname + '/app.bundle.js');
-});
 
 //handle messages
 app.post('/signup', function(req, res) {
@@ -185,7 +201,7 @@ app.post('/login', function(req, res) {
         var rand = Math.floor(Math.random() * 65535);
 
         //TODO: allow multiple login sources
-        var query = 'UPDATE profiles SET lastToken=' + rand + ' WHERE email="' + results[0].email + '";';
+        var query = 'UPDATE profiles SET lastToken=' + rand + ' WHERE email="' + fields.email + '";';
 
         db.query(query, function(err) {
           if (err) throw err;
@@ -205,6 +221,82 @@ app.post('/login', function(req, res) {
 app.post('/passwordrecovery', function(req, res) {
   res.write('<p>Coming Soon</p>');
   res.end();
+});
+
+app.post('/profile', function(req, res) {
+  //formidable handles forms
+  var form = formidable.IncomingForm();
+
+  //parse form
+  form.parse(req, function(err, fields) {
+    if (err) throw err;
+
+    //get the requester's relation level
+    //(SELF, FRIEND, GROUP, PUBLIC, BLOCKED)
+    getRelationLevel(db, fields.id, fields.token, fields.profileId, function(err, relationLevel) {
+      if (err === 404 || relationLevel === BLOCKED) {
+        console.log(err === 404 ? 'missing profile' : 'blocked profile', fields.id, fields.profileId);
+        res.status(404);
+        res.end();
+        return;
+      }
+      else if (err === 'id and token don\'t match') {
+        console.log(err, fields.id, fields.token);
+        res.status(400);
+        res.end(err);
+        return;
+      }
+      else if (err) throw err;
+
+      //get the userId's information
+      var query = 'SELECT email, avatar, username, realname, biography FROM profiles WHERE id=' + fields.profileId + ';';
+      db.query(query, function(err, profileResults) {
+        if (err) throw err;
+
+        //get the userId's visibility settings
+        var query = 'SELECT visibleProfile, visibleEmail, visibleAvatar, visibleUsername, visibleRealname, visibleBiography FROM profiles WHERE id=' + fields.profileId + ';';
+        db.query(query, function(err, visibilityResults) {
+          if (err) throw err;
+
+          //determine what to add to the return message
+          var pack = function(field, visible) {
+//console.log(field, visible);
+            //can see
+            if (visible == 'all' || relationLevel == SELF) return field;
+            //friends & up
+            if (visible == 'friends' && relationLevel >= FRIEND) return field;
+            //groups & up
+            if (visible == 'groups' && relationLevel >= GROUP) return field;
+            //no one can see
+            return undefined;
+          };
+
+          //check if profile is visible
+          if (pack(true, visibilityResults[0].visibleProfile) !== true) {
+            console.log('private profile');
+            res.status(404);
+            res.end();
+            return;
+          }
+
+          var json = {
+            email: pack(profileResults[0].email, visibilityResults[0].visibleEmail),
+            avatar: pack(profileResults[0].avatar, visibilityResults[0].visibleAvatar),
+            username: pack(profileResults[0].username, visibilityResults[0].visibleUsername),
+            realname: pack(profileResults[0].realname, visibilityResults[0].visibleRealname),
+            biography: pack(profileResults[0].biography, visibilityResults[0].visibleBiography)
+          };
+
+          res.end(JSON.stringify(json));
+        });
+      });
+    });
+  });
+});
+
+//necessary files
+app.get('/app.bundle.js', function(req, res) {
+  res.sendFile(__dirname + '/app.bundle.js');
 });
 
 //fallback
