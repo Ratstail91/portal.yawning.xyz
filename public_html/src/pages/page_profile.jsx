@@ -9,7 +9,6 @@ class PageProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loaded: false,
       editing: false,
       id: 0,
       email: '',
@@ -28,12 +27,10 @@ class PageProfile extends React.Component {
     }
 
     //load the data
-    if (!this.state.loaded) {
-      this.requestProfile(
-        this.props.match.params.profileId ||
-        this.props.id
-      );
-    }
+    this.requestProfile(
+      this.props.match.params.profileId ||
+      this.props.id
+    );
   }
 
   setWarning(s) {
@@ -63,13 +60,12 @@ class PageProfile extends React.Component {
             json.realname,
             json.biography
           );
-
-          this.setState({loaded: true});
         }
         else if (xhttp.ststus === 400) {
           this.setWarning(xhttp.responseText);
         }
         else if (xhttp.status === 404) {
+          //TODO: sub-404
           this.props.history.push('/404');
         }
       }
@@ -162,7 +158,7 @@ class PageProfile extends React.Component {
         </div>
         <div className="sexyLayout">
           <div style={{flex: '0 1 auto', display: 'flex', flexDirection: 'column'}}>
-            <OptionsPanel custom={customLinks} />
+            <OptionsPanel custom={customLinks} profileClick={()=>{this.setState({editing:false}); this.requestProfile(this.props.id);}} />
             <div style={{flex: '1'}}></div>
           </div>
           {mainPanel}
