@@ -20,12 +20,22 @@ h1 {
   font: 24pt;
 }
 
+h2 {
+  font: 14px;
+}
+
 br {
   padding-bottom: .5rem;
 }
 
 td {
   vertical-align: top;
+}
+
+ul {
+  list-style-type: disc;
+  list-style-position: inside;
+  padding-bottom: .5rem;
 }
 
 .centered {
