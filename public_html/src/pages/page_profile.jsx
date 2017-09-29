@@ -161,7 +161,7 @@ class PageProfile extends React.Component {
           <p>{this.state.warning}</p>
         </div>
         <div className="sexyLayout">
-          <div>
+          <div style={{flex: '0 1 auto', display: 'flex', flexDirection: 'column'}}>
             <OptionsPanel custom={customLinks} />
             <div style={{flex: '1'}}></div>
           </div>

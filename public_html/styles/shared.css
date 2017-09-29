@@ -12,7 +12,8 @@ body {
   background: #e0bad6;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 h1 {
@@ -21,6 +22,10 @@ h1 {
 
 br {
   padding-bottom: .5rem;
+}
+
+td {
+  vertical-align: top;
 }
 
 .centered {
@@ -36,11 +41,9 @@ br {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   padding: 0 10px;
-  height: 100vh;
+  height: 100%;
   background: #ffd3f3;
-  overflow-y: auto;
 }
 
 @media screen and (min-width: 480px) {
@@ -54,7 +57,7 @@ br {
 }
 
 .page {
-  flex: 1 0 auto;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -129,5 +132,5 @@ br {
 
 /* flex table */
 .flexTable {
-  flex: 1;
+  flex: 0 1 auto;
 }
