@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import OptionsPanel from '../panels/options_panel.jsx';
+import LegalPanel from '../panels/legal_panel.jsx';
 import { storeProfile } from '../reducers/profile.js';
 
 class PageProfile extends React.Component {
@@ -163,6 +164,7 @@ class PageProfile extends React.Component {
           </div>
           {mainPanel}
         </div>
+      <LegalPanel />
       </div>
     );
   };

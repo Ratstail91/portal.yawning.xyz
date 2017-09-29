@@ -295,6 +295,10 @@ app.post('/profile', function(req, res) {
 });
 
 //necessary files
+app.post('/legal', function(req, res) {
+  res.sendFile(__dirname + '/docs/legal.md');
+});
+
 app.get('/app.bundle.js', function(req, res) {
   res.sendFile(__dirname + '/app.bundle.js');
 });

@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import LegalPanel from '../panels/legal_panel.jsx';
+
 class PageHome extends React.Component {
   constructor(props) {
     super(props);
@@ -35,6 +37,7 @@ class PageHome extends React.Component {
           <Link to='/signup'>Sign Up</Link>
           <Link to='/passwordrecovery'>Reset Password</Link>
         </div>
+      <LegalPanel />
       </div>
     );
   };

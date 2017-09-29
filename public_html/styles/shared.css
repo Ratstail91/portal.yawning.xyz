@@ -42,7 +42,7 @@ td {
   display: flex;
   flex-direction: column;
   padding: 0 10px;
-  height: 100%;
+  min-height: 100vh;
   background: #ffd3f3;
 }
 
@@ -133,4 +133,8 @@ td {
 /* flex table */
 .flexTable {
   flex: 0 1 auto;
+}
+
+.flexTable td:nth-child(1) {
+  min-width: 100px;
 }

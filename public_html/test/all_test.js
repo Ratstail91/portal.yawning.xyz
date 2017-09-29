@@ -13,6 +13,7 @@ import DevTools from '../src/dev_tools.jsx';
 
 //include all pages
 import PageHome from '../src/pages/page_home.jsx';
+import PageLegal from '../src/pages/page_legal.jsx';
 import PageLogin from '../src/pages/page_login.jsx';
 import PageNotFound from '../src/pages/page_not_found.jsx';
 import PagePasswordRecovery from '../src/pages/page_password_recovery.jsx';
@@ -33,6 +34,7 @@ class MemoryApp extends React.Component {
         <MemoryRouter initialEntries={['/']} initialIndex={1}>
           <Switch>
             <Route exact path='/' component={PageHome} />
+            <Route path='/legal' component={PageLegal} />
             <Route path='/login' component={PageLogin} />
             <Route path='/passwordrecovery' component={PagePasswordRecovery} />
             <Route path='/profile/:profileId?' component={PageProfile} />
