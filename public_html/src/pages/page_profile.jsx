@@ -62,7 +62,7 @@ class PageProfile extends React.Component {
             json.biography
           );
         }
-        else if (xhttp.ststus === 400) {
+        else if (xhttp.status === 400) {
           this.setWarning(xhttp.responseText);
         }
         else if (xhttp.status === 404) {

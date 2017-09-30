@@ -242,8 +242,8 @@ app.post('/profile', function(req, res) {
       }
       else if (err === 'id and token don\'t match') {
         console.log(err, fields.id, fields.token);
-        res.status(400);
-        res.end(err);
+        res.status(400).send(err + ' (Are you logged in somewhere else? Try logging out and back in.)');
+        res.end();
         return;
       }
       else if (err) throw err;
