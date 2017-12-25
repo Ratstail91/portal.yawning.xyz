@@ -82,7 +82,7 @@ class PageProfile extends React.Component {
       this.setState({
         id: profileId,
         email: email || '(not set)',
-        avatar: avatar,
+        avatar: avatar || 'default.png',
         username: username || '(not set)',
         realname: realname || '(not set)',
         biography: biography || '(not set)'
@@ -135,11 +135,9 @@ class PageProfile extends React.Component {
     }
 
     //standard display
-    var avatar = '/avatars/' + (this.state.avatar ? this.state.avatar : 'default.png' );
-
     var mainPanel = (
       <div className='page'>
-        <img src={avatar} className='avatarNormal' />
+        <img src={'/avatars/' + this.state.avatar} className='avatarNormal' />
         <table className='flexTable'>
           <tbody>
             {makeRow('Email:', this.state.email)}

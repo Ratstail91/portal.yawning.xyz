@@ -75,7 +75,7 @@ ul {
 
 /* warning message */
 .warning {
-  flex: 1;
+  flex: 0 1 auto;
   display: none;
   flex-direction: row;
   justify-content: center;
