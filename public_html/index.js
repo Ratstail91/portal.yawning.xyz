@@ -128,6 +128,7 @@ app.post('/signup', function(req, res) {
   });
 });
 
+//accessable via email
 app.get('/verify', function(req, res) {
   var query = 'SELECT email, hash, salt, verify FROM signups WHERE email="' + req.query.email + '";';
   db.query(query, function(err, results) {
@@ -223,7 +224,7 @@ app.post('/passwordrecovery', function(req, res) {
   res.end();
 });
 
-app.post('/profile', function(req, res) {
+app.post('/requestprofile', function(req, res) {
   //formidable handles forms
   var form = formidable.IncomingForm();
 
@@ -242,7 +243,7 @@ app.post('/profile', function(req, res) {
       }
       else if (err === 'id and token don\'t match') {
         console.log(err, fields.id, fields.token);
-        res.status(400).send(err + ' (Are you logged in somewhere else? Try logging out and back in.)');
+        res.status(400).send(err + ' (Are you logged in somewhere else? Try logging out and back in.)'); //TODO: fix this
         res.end();
         return;
       }
@@ -289,6 +290,68 @@ app.post('/profile', function(req, res) {
 
           res.end(JSON.stringify(json));
         });
+      });
+    });
+  });
+});
+
+app.post('/updateprofile', function(req, res) {
+  //formidable handles forms
+  var form = formidable.IncomingForm();
+
+  //parse form
+  form.parse(req, function(err, fields) {
+    if (err) throw err;
+
+    var query = 'SELECT lastToken FROM profiles WHERE id=' + fields.id;
+    db.query(query, function(err, queryResults) {
+      if (err) throw err;
+
+      //hack check
+      if (queryResults.length !== 1 || queryResults[0].lastToken != fields.token) {
+        console.log('Hacking attempt against profile: ' + fields.id);
+        res.status(400).write('<img src="' + getMeme('hackerman') + '" />');
+        res.end();
+        return;
+      }
+
+      //create the update system
+      var fieldCount = 0;
+      var query = 'UPDATE profiles SET ';
+      var update = function(name, value) {
+        if (value != undefined) {
+          if (fieldCount > 0) {
+            query += ', ';
+          }
+          query += name + ' = \'' + value + '\' ';
+          fieldCount += 1;
+        }
+      }
+
+      //add to the query
+//      update('email', fields.email);
+      update('avatar', fields.avatar);
+      update('username', fields.username);
+      update('realname', fields.realname);
+      update('biography', fields.biography);
+
+      query += ' WHERE id = ' + fields.id + ';';
+
+      //debugging
+      console.log(query);
+
+      //just in case
+      if (fieldCount === 0) {
+        res.status(400).write('Invalid update data');
+        res.end();
+        return;
+      }
+
+      db.query(query, function(err, updateResults) {
+        if (err) throw err;
+
+        res.status(200);
+        res.end();
       });
     });
   });

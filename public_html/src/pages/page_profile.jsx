@@ -40,6 +40,22 @@ class PageProfile extends React.Component {
     });
   }
 
+  toggleEditing() {
+    if (this.props.id !== this.state.id) {
+      //can't edit someone else's profile
+      return;
+    }
+
+    this.setState({
+      editing: !this.state.editing
+    });
+
+    if (!this.state.editing) {
+      this.updateProfile();
+    }
+  }
+
+  //request this profile's info, using my credentials
   requestProfile(profileId) {
     //form data
     var formData = new FormData();
@@ -73,19 +89,82 @@ class PageProfile extends React.Component {
     }.bind(this);
 
     //send
-    xhttp.open('POST', '/profile', true);
+    xhttp.open('POST', '/requestprofile', true);
     xhttp.send(formData);
   }
 
+  //push any changes to the server
+  updateProfile() {
+    //count the number of fields to update
+    var count = 0;
+
+    //form data
+    var formData = new FormData();
+
+    //credentials
+    formData.append('id', this.props.id);
+    formData.append('token', this.props.token);
+
+    //each aspect
+    if (this.props.email !== this.state.email) {
+      //NOTE: email is ignored server-side
+      formData.append('email', this.state.email);
+      count += 1;
+    }
+    if (this.props.avatar !== this.state.avatar) {
+      formData.append('avatar', this.state.avatar);
+      count += 1;
+    }
+    if (this.props.username !== this.state.username) {
+      formData.append('username', this.state.username);
+      count += 1;
+    }
+    if (this.props.realname !== this.state.realname) {
+      formData.append('realname', this.state.realname);
+      count += 1;
+    }
+    if (this.props.biography !== this.state.biography) {
+      formData.append('biography', this.state.biography);
+      count += 1;
+    }
+
+    //no change
+    if (count === 0) {
+      return;
+    }
+
+    //callback
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (xhttp.readyState === 4) {
+        if (xhttp.status === 200) {
+          this.requestProfile(this.props.id);
+        }
+        else if (xhttp.status === 400) {
+          this.setWarning(xhttp.responseText);
+        }
+        else if (xhttp.status === 404) {
+          //TODO: sub-404
+          this.props.history.push('/404');
+        }
+      }
+    }.bind(this);
+
+    //send
+    xhttp.open('POST', '/updateprofile', true);
+    xhttp.send(formData);
+  }
+
+  //if profileId matches props.id, update the store
   storeProfile(profileId, email, avatar, username, realname, biography) {
     if (profileId == this.props.id) {
       this.setState({
         id: profileId,
-        email: email || '(not set)',
-        avatar: avatar || 'default.png',
-        username: username || '(not set)',
-        realname: realname || '(not set)',
-        biography: biography || '(not set)'
+        email: email || '',
+        avatar: avatar || '',
+        username: username || '',
+        realname: realname || '',
+        biography: biography || ''
       });
 
       this.props.storeProfile(
@@ -96,6 +175,7 @@ class PageProfile extends React.Component {
         biography
       );
     }
+    //ontherwise, only update the displayed info
     else {
       this.setState({
         id: profileId,
@@ -118,7 +198,7 @@ class PageProfile extends React.Component {
     var customLinks = (
       <div>
         <p><Link to='/passwordchange'>Change Password</Link></p>
-        <p><Link to='#'>Edit Profile</Link></p>
+        <p><Link to='#' onClick={(e)=>{e.preventDefault(); this.toggleEditing();}}>Edit Profile</Link></p>
         <p>Your ID: {this.props.id}</p>
         <p>Profile ID: {this.state.id}</p>
       </div>
@@ -137,13 +217,13 @@ class PageProfile extends React.Component {
     //standard display
     var mainPanel = (
       <div className='page'>
-        <img src={'/avatars/' + this.state.avatar} className='avatarNormal' />
+        <img src={'/avatars/' + (this.state.avatar || 'default.png')} className='avatarNormal' />
         <table className='flexTable'>
           <tbody>
-            {makeRow('Email:', this.state.email)}
-            {makeRow('Username:', this.state.username)}
-            {makeRow('Real Name:', this.state.realname)}
-            {makeRow('Biography:', this.state.biography)}
+            {makeRow('Email:', this.state.email || 'na')}
+            {makeRow('Username:', this.state.username || 'na')}
+            {makeRow('Real Name:', this.state.realname || 'na')}
+            {makeRow('Biography:', this.state.biography || 'na')}
           </tbody>
         </table>
       </div>
