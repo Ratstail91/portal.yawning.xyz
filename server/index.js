@@ -3,11 +3,10 @@ const path = require('path');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
-const isEmail = require('isemail');
 const mysql = require('mysql');
 const sendmail = require('sendmail')();
 const {SELF, FRIEND, GROUP, PUBLIC, BLOCKED} = require('./consts');
-const {getMeme, getRelationLevel} = require('./utils');
+const {getMeme, getRelationLevel, validateEmail} = require('./utils');
 
 const app = express();
 
@@ -39,14 +38,15 @@ db.connect(err => {
 });
 
 // Static directories
-app.use('/avatars', express.static(path.resolve(__dirname, './public_html/avatars')));
-app.use('/node_modules', express.static(path.resolve(__dirname, './public_html/node_modules')));
-app.use('/styles', express.static(path.resolve(__dirname, './public_html/styles')));
+app.use('/', express.static(path.resolve(__dirname, '../public_html')));
+app.use('/avatars', express.static(path.resolve(__dirname, '../public_html/avatars')));
+app.use('/node_modules', express.static(path.resolve(__dirname, '../public_html/node_modules')));
+app.use('/styles', express.static(path.resolve(__dirname, '../public_html/styles')));
 
 // Handle messages
 app.post('/signup', (req, res, next) => {
   // Valid email and password
-  if (!isEmail.validate(req.body.email) || req.body.password.length < 8 || req.body.password !== req.body.retype) {
+  if (!validateEmail(req.body.email) || req.body.password.length < 8 || req.body.password !== req.body.retype) {
     res.write('<html><body><img src="' + getMeme('hackerman') + '" /></body></html>');
     res.end();
     return;
@@ -151,7 +151,7 @@ app.get('/verify', (req, res, next) => {
 
 app.post('/login', (req, res, next) => {
   // Valid email and password
-  if (!isEmail.validate(req.body.email) || req.body.password.length < 8) {
+  if (!validateEmail(req.body.email) || req.body.password.length < 8) {
     res.status(400).write('<img src="' + getMeme('hackerman') + '" />');
     res.end();
     return;

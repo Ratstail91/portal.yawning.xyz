@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { validateEmail } from '../../scripts/utilities.js';
+import validateEmail from '../utils/validate_email.js';
 
 class PageSignup extends React.Component {
   constructor(props) {

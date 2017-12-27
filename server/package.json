@@ -10,7 +10,6 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "forever": "^0.15.3",
-    "isemail": "^3.0.0",
     "mysql": "^2.15.0",
     "sendmail": "^1.2.0"
   },
@@ -26,7 +25,8 @@
       "prefer-arrow-callback": "off",
       "space-before-function-paren": "off",
       "no-unused-vars": "warn",
-      "max-params": "off"
+      "max-params": "off",
+      "no-useless-escape": "warn"
     }
   }
 }

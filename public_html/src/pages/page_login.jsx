@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { login } from '../reducers/profile.js';
-import { validateEmail } from '../../scripts/utilities.js';
+import validateEmail from '../utils/validate_email.js';
 
 class PageLogin extends React.Component {
   constructor(props) {
