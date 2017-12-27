@@ -1,4 +1,10 @@
 {
+  "scripts": {
+    "start": "forever -o forever.log -e error.log start index.js",
+    "restart": "forever -o forever.log -e error.log restart index.js",
+    "stop": "forever stop index.js",
+    "linter": "xo"
+  },
   "dependencies": {
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
@@ -8,13 +14,19 @@
     "mysql": "^2.15.0",
     "sendmail": "^1.2.0"
   },
-  "scripts": {
-    "start": "forever -o forever.log -e error.log start index.js",
-    "restart": "forever -o forever.log -e error.log restart index.js",
-    "stop": "forever stop index.js",
-    "test": "xo"
-  },
   "devDependencies": {
     "xo": "^0.18.2"
+  },
+  "xo": {
+    "space": 2,
+    "rules": {
+      "no-var": "off",
+      "curly": "off",
+      "spaced-comment": "off",
+      "prefer-arrow-callback": "off",
+      "space-before-function-paren": "off",
+      "no-unused-vars": "warn",
+      "max-params": "off"
+    }
   }
 }

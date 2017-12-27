@@ -5,9 +5,10 @@ const PUBLIC = 1;
 const BLOCKED = 0;
 
 module.exports = {
-    SELF,
-    FRIEND,
-    GROUP,
-    PUBLIC,
-    BLOCKED
+  SELF,
+  FRIEND,
+  GROUP,
+  PUBLIC,
+  BLOCKED
 };
+

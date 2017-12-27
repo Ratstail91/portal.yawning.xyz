@@ -1,13 +1,8 @@
 {
-  "name": "public_html",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
+    "start": "webpack",
     "test": "xvfb-run -a karma start karma.conf.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "markdown-it": "^8.4.0",
     "prop-types": "^15.6.0",
