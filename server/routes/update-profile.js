@@ -1,16 +1,17 @@
+const debug = require('debug')('yawning:updateProfile');
 const db = require('../database');
 const {getMeme} = require('../utils');
 
 const updateProfile = (req, res, next) => {
   const query = 'SELECT lastToken FROM profiles WHERE id = ?';
-  db.query(query, [req.fields.id], (err, queryResults) => {
+  db.query(query, [req.body.id], (err, queryResults) => {
     if (err) {
       return next(err);
     }
 
     // Hack check
-    if (queryResults.length !== 1 || queryResults[0].lastToken !== req.fields.token) {
-      console.log('Hacking attempt against profile: ' + req.fields.id);
+    if (queryResults.length !== 1 || queryResults[0].lastToken !== req.body.token) {
+      console.log('Hacking attempt against profile: ' + req.body.id);
       res.status(400).write('<img src="' + getMeme('hackerman') + '" />');
       res.end();
       return;
@@ -30,18 +31,18 @@ const updateProfile = (req, res, next) => {
     };
 
     // Add to the query
-    // update('email', req.fields.email);
-    update('avatar', req.fields.avatar);
-    update('username', req.fields.username);
-    update('realname', req.fields.realname);
-    update('biography', req.fields.biography);
+    // update('email', req.body.email);
+    update('avatar', req.body.avatar);
+    update('username', req.body.username);
+    update('realname', req.body.realname);
+    update('biography', req.body.biography);
 
-    query += ' WHERE id = ' + req.fields.id + ';';
+    query += ' WHERE id = ' + req.body.id + ';';
 
-        // Debugging
-    console.log(query);
+    // Debugging
+    debug(query);
 
-        // Just in case
+    // Just in case
     if (fieldCount === 0) {
       res.status(400).write('Invalid update data');
       res.end();

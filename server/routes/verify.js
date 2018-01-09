@@ -1,7 +1,9 @@
+const debug = require('debug')('yawning:verify');
 const db = require('../database');
 
 const verify = (req, res, next) => {
-  const query = 'SELECT email, hash, salt, verify FROM signups WHERE email = ?';
+  const query = 'SELECT email, hash, verify FROM signups WHERE email = ?';
+  debug('Verifying %s', req.query.email);
   db.query(query, [req.query.email], (err, results) => {
     if (err) {
       return next(err);
@@ -13,15 +15,15 @@ const verify = (req, res, next) => {
       return;
     }
 
-    if (req.query.verify !== results[0].verify) {
+    if (Number(req.query.verify) !== Number(results[0].verify)) {
       res.write('<html><body><p>Verification Failed!</p></body></html>');
       res.end();
       return;
     }
 
     // Move the data from signups to profiles
-    const query = 'INSERT INTO profiles (email, hash, salt) VALUES (?, ?, ?);';
-    db.query(query, [results[0].email, results[0].hash, results[0].salt], err => {
+    const query = 'INSERT INTO profiles (email, hash) VALUES (?, ?);';
+    db.query(query, [results[0].email, results[0].hash], err => {
       if (err) {
         return next(err);
       }
