@@ -30,6 +30,6 @@ Permission is granted to anyone to use this software for any purpose, including 
 
 ## Other Work
 
-You can see my current main project by visiting my website here: [krgamestudios.com](krgamestudios.com).
+You can see my current main project by visiting my website here: [krgamestudios.com](https://krgamestudios.com).
 
 You can also see my other side-projects via my profile.
