@@ -28,7 +28,8 @@
       "space-before-function-paren": "off",
       "no-unused-vars": "warn",
       "max-params": "off",
-      "no-useless-escape": "warn"
+      "no-useless-escape": "warn",
+      "max-nested-callbacks": ["error", 6]
     }
   }
 }
