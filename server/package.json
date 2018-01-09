@@ -7,10 +7,12 @@
     "linter": "xo"
   },
   "dependencies": {
-    "bcrypt": "^1.0.3",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
+    "debug": "^3.1.0",
     "express": "^4.16.2",
     "express-formidable": "^1.0.0",
+    "express-history-api-fallback": "^2.2.1",
     "forever": "^0.15.3",
     "mysql": "^2.15.0",
     "sendmail": "^1.2.0"
@@ -28,7 +30,11 @@
       "space-before-function-paren": "off",
       "no-unused-vars": "warn",
       "max-params": "off",
-      "no-useless-escape": "warn"
+      "no-useless-escape": "warn",
+      "max-nested-callbacks": [
+        "error",
+        6
+      ]
     }
   }
 }
