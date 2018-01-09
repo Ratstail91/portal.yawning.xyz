@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
+const expressFormidable = require('express-formidable');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
@@ -17,6 +18,9 @@ app.use(bodyParser.urlencoded({
 
 // Parse application/json
 app.use(bodyParser.json());
+
+// Parse form data
+app.use(expressFormidable());
 
 // Db connections
 const db = mysql.createConnection({
@@ -38,22 +42,23 @@ db.connect(err => {
 });
 
 // Static directories
-app.use('/', express.static(path.resolve(__dirname, '../public_html')));
-app.use('/avatars', express.static(path.resolve(__dirname, '../public_html/avatars')));
-app.use('/node_modules', express.static(path.resolve(__dirname, '../public_html/node_modules')));
-app.use('/styles', express.static(path.resolve(__dirname, '../public_html/styles')));
+var workingDir = path.resolve(__dirname + '/../public_html');
+
+app.use('/', express.static(workingDir));
+app.use('/avatars', express.static(workingDir + '/avatars'));
+app.use('/node_modules', express.static(workingDir + '/node_modules'));
+app.use('/styles', express.static(workingDir + '../public_html/styles'));
 
 // Handle messages
 app.post('/signup', (req, res, next) => {
   // Valid email and password
-  if (!validateEmail(req.body.email) || req.body.password.length < 8 || req.body.password !== req.body.retype) {
+  if (!validateEmail(req.fields.email) || req.fields.password.length < 8 || req.fields.password !== req.fields.retype) {
     res.write('<html><body><img src="' + getMeme('hackerman') + '" /></body></html>');
     res.end();
     return;
   }
-
   // Check if the email already exists
-  db.query('SELECT COUNT(*) FROM profiles WHERE email = ?', [req.body.email], (err, results) => {
+  db.query('SELECT COUNT(*) FROM profiles WHERE email = ?', [req.fields.email], (err, results) => {
     if (err) {
       return next(err);
     }
@@ -70,7 +75,7 @@ app.post('/signup', (req, res, next) => {
         return next(err);
       }
 
-      bcrypt.hash(req.body.password, salt, (err, hash) => {
+      bcrypt.hash(req.fields.password, salt, (err, hash) => {
         if (err) {
           next(err);
         }
@@ -79,19 +84,19 @@ app.post('/signup', (req, res, next) => {
         const rand = Math.floor(Math.random() * 65535);
         const query = 'REPLACE INTO signups (email, salt, hash, verify) VALUES (?, ?, ?, ?)';
 
-        db.query(query, [req.body.email, salt, hash, rand], err => {
+        db.query(query, [req.fields.email, salt, hash, rand], (err) => {
           if (err) {
             return next(err);
           }
 
           // Send the verification email
-          const addr = 'https://portal.yawning.xyz/verify?email=' + req.body.email + '&verify=' + rand;
+          const addr = 'https://portal.yawning.xyz/verify?email=' + req.fields.email + '&verify=' + rand;
           const msg = 'Hello! Please visit the following address to verify your email: ';
           const msgHtml = '<html><body><p>' + msg + '<a href="' + addr + '">' + addr + '</a></p></body></html>';
 
           sendmail({
             from: 'signup@portal.yawning.com',
-            to: req.body.email,
+            to: req.fields.email,
             subject: 'email verification',
             text: msg + addr,
             html: msgHtml
@@ -151,14 +156,14 @@ app.get('/verify', (req, res, next) => {
 
 app.post('/login', (req, res, next) => {
   // Valid email and password
-  if (!validateEmail(req.body.email) || req.body.password.length < 8) {
-    res.status(400).write('<img src="' + getMeme('hackerman') + '" />');
+  if (!validateEmail(req.fields.email) || req.fields.password.length < 8) {
+    res.status(400).write('server-side login rejection');
     res.end();
     return;
   }
 
   // Find this email's information
-  db.query('SELECT id, salt, hash FROM profiles WHERE email = ?', [req.body.email], (err, results) => {
+  db.query('SELECT id, salt, hash FROM profiles WHERE email = ?', [req.fields.email], (err, results) => {
     if (err) {
       return next(err);
     }
@@ -170,7 +175,7 @@ app.post('/login', (req, res, next) => {
     }
 
     // Gen a new hash hash
-    bcrypt.hash(req.body.password, results[0].salt, (err, hash) => {
+    bcrypt.hash(req.fields.password, results[0].salt, (err, hash) => {
       if (err) {
         return next(err);
       }
@@ -188,7 +193,7 @@ app.post('/login', (req, res, next) => {
       // @TODO: allow multiple login sources
       const query = 'UPDATE profiles SET lastToken= ?  WHERE email = ?';
 
-      db.query(query, [rand, req.body.email], err => {
+      db.query(query, [rand, req.fields.email], err => {
         if (err) {
           return next(err);
         }
@@ -212,15 +217,15 @@ app.post('/passwordrecovery', (req, res) => {
 app.post('/requestprofile', (req, res, next) => {
   // Get the requester's relation level
   // (SELF, FRIEND, GROUP, PUBLIC, BLOCKED)
-  getRelationLevel(db, req.body.id, req.body.token, req.body.profileId, (err, relationLevel) => {
+  getRelationLevel(db, req.fields.id, req.fields.token, req.fields.profileId, (err, relationLevel) => {
     if (err === 404 || relationLevel === BLOCKED) {
-      console.log(err === 404 ? 'missing profile' : 'blocked profile', req.body.id, req.body.profileId);
+      console.log(err === 404 ? 'missing profile' : 'blocked profile', req.fields.id, req.fields.profileId);
       res.status(404);
       res.end();
       return;
     }
     if (err === 'id and token don\'t match') {
-      console.log(err, req.body.id, req.body.token);
+      console.log(err, req.fields.id, req.fields.token);
       // @TODO: fix this
       res.status(400).send(err + ' (Are you logged in somewhere else? Try logging out and back in.)');
       res.end();
@@ -232,14 +237,14 @@ app.post('/requestprofile', (req, res, next) => {
 
     // Get the userId's information
     const query = 'SELECT email, avatar, username, realname, biography FROM profiles WHERE id = ?';
-    db.query(query, [req.body.profileId], (err, profileResults) => {
+    db.query(query, [req.fields.profileId], (err, profileResults) => {
       if (err) {
         return next(err);
       }
 
       // Get the userId's visibility settings
       const query = 'SELECT visibleProfile, visibleEmail, visibleAvatar, visibleUsername, visibleRealname, visibleBiography FROM profiles WHERE id = ?';
-      db.query(query, [req.body.profileId], (err, visibilityResults) => {
+      db.query(query, [req.fields.profileId], (err, visibilityResults) => {
         if (err) {
           return next(err);
         }
@@ -287,14 +292,14 @@ app.post('/requestprofile', (req, res, next) => {
 
 app.post('/updateprofile', (req, res, next) => {
   const query = 'SELECT lastToken FROM profiles WHERE id = ?';
-  db.query(query, [req.body.id], (err, queryResults) => {
+  db.query(query, [req.fields.id], (err, queryResults) => {
     if (err) {
       return next(err);
     }
 
     // Hack check
-    if (queryResults.length !== 1 || queryResults[0].lastToken !== req.body.token) {
-      console.log('Hacking attempt against profile: ' + req.body.id);
+    if (queryResults.length !== 1 || queryResults[0].lastToken !== req.fields.token) {
+      console.log('Hacking attempt against profile: ' + req.fields.id);
       res.status(400).write('<img src="' + getMeme('hackerman') + '" />');
       res.end();
       return;
@@ -314,13 +319,13 @@ app.post('/updateprofile', (req, res, next) => {
     };
 
     // Add to the query
-    // update('email', req.body.email);
-    update('avatar', req.body.avatar);
-    update('username', req.body.username);
-    update('realname', req.body.realname);
-    update('biography', req.body.biography);
+    // update('email', req.fields.email);
+    update('avatar', req.fields.avatar);
+    update('username', req.fields.username);
+    update('realname', req.fields.realname);
+    update('biography', req.fields.biography);
 
-    query += ' WHERE id = ' + req.body.id + ';';
+    query += ' WHERE id = ' + req.fields.id + ';';
 
         // Debugging
     console.log(query);
@@ -345,16 +350,16 @@ app.post('/updateprofile', (req, res, next) => {
 
 // Necessary files
 app.post('/legal', (req, res) => {
-  res.sendFile(path.resolve(__dirname, './docs/legal.md'));
+  res.sendFile(workingDir + '/docs/legal.md');
 });
 
 app.get('/app.bundle.js', (req, res) => {
-  res.sendFile(path.resolve(__dirname, './app.bundle.js'));
+  res.sendFile(workingDir + '/app.bundle.js');
 });
 
 // Fallback
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '/.index.html'));
+  res.sendFile(workingDir + '/index.html');
 });
 
 // Startup

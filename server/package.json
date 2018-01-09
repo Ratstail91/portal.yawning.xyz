@@ -3,12 +3,14 @@
     "start": "forever -o forever.log -e error.log start index.js",
     "restart": "forever -o forever.log -e error.log restart index.js",
     "stop": "forever stop index.js",
+    "node": "node index.js",
     "linter": "xo"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "express-formidable": "^1.0.0",
     "forever": "^0.15.3",
     "mysql": "^2.15.0",
     "sendmail": "^1.2.0"
