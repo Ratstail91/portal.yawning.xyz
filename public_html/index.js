@@ -9,11 +9,11 @@ const BLOCKED = 0;
 //utility function
 function getRelationLevel(db, id, token, profileId, cb) {
   //TODO: expand this
-  db.query('SELECT lastToken FROM profiles WHERE id = ?', [id], function(err, results) {
+  db.query('SELECT lastToken FROM profiles WHERE id = ?;', [id], function(err, results) {
     if (err) return cb(err);
     if (results[0].lastToken != token) return cb('id and token don\'t match');
 
-    db.query('SELECT id FROM profiles WHERE id = ?', [profileId], function(err, results) {
+    db.query('SELECT id FROM profiles WHERE id = ?;', [profileId], function(err, results) {
       if (err) return cb(err);
       if (results.length === 0) return cb(404);
       if (id == profileId) return cb(undefined, SELF);
@@ -153,7 +153,7 @@ app.get('/verify', function(req, res) {
     db.query(query, [results[0].email, results[0].hash, results[0].salt], function(err) {
       if (err) throw err;
 
-      db.query('DELETE FROM signups WHERE email = ?', [results[0].email], function(err) {
+      db.query('DELETE FROM signups WHERE email = ?;', [results[0].email], function(err) {
         if (err) throw err;
 
         res.write('<html><body><p>Verification Succeeded!</p></body></html>');
@@ -179,7 +179,7 @@ app.post('/login', function(req, res) {
     }
 
     //find this email's information
-    db.query('SELECT id, salt, hash FROM profiles WHERE email = ? ', [fields.email], function(err, results) {
+    db.query('SELECT id, salt, hash FROM profiles WHERE email = ?;', [fields.email], function(err, results) {
       if (err) throw err;
 
       if (results.length === 0) {
@@ -188,22 +188,22 @@ app.post('/login', function(req, res) {
         return;
       }
 
-      // gen a new hash hash
+      //gen a new hash hash
       bcrypt.hash(fields.password, results[0].salt, function(err, hash) {
         if (err) throw err;
 
-        // compare the calculated hash to the stored hash
+        //compare the calculated hash to the stored hash
         if (hash !== results[0].hash) {
           res.status(400).write('Incorrect Email Or Password');
           res.end();
           return;
         }
 
-        // create and store the login token
+        //create and store the login token
         var rand = Math.floor(Math.random() * 65535);
 
-        // TODO: allow multiple login sources
-        var query = 'UPDATE profiles SET lastToken= ?  WHERE email = ?';
+        //TODO: allow multiple login sources
+        var query = 'UPDATE profiles SET lastToken = ? WHERE email = ?;';
 
         db.query(query, [rand, fields.email], function(err) {
           if (err) throw err;
@@ -262,7 +262,7 @@ app.post('/requestprofile', function(req, res) {
 
           //determine what to add to the return message
           var pack = function(field, visible) {
-            //console.log(field, visible);
+//console.log(field, visible);
             //can see
             if (visible == 'all' || relationLevel == SELF) return field;
             //friends & up
@@ -304,7 +304,7 @@ app.post('/updateprofile', function(req, res) {
   form.parse(req, function(err, fields) {
     if (err) throw err;
 
-    var query = 'SELECT lastToken FROM profiles WHERE id = ?';
+    var query = 'SELECT lastToken FROM profiles WHERE id = ?;';
     db.query(query, [fields.id], function(err, queryResults) {
       if (err) throw err;
 
@@ -330,7 +330,7 @@ app.post('/updateprofile', function(req, res) {
       }
 
       //add to the query
-      // update('email', fields.email);
+//      update('email', fields.email);
       update('avatar', fields.avatar);
       update('username', fields.username);
       update('realname', fields.realname);
@@ -358,7 +358,7 @@ app.post('/updateprofile', function(req, res) {
   });
 });
 
-// necessary files
+//necessary files
 app.post('/legal', function(req, res) {
   res.sendFile(__dirname + '/docs/legal.md');
 });
@@ -367,12 +367,12 @@ app.get('/app.bundle.js', function(req, res) {
   res.sendFile(__dirname + '/app.bundle.js');
 });
 
-// fallback
+//fallback
 app.get('*', function(req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-// startup
+//startup
 http.listen(4000, function() {
   console.log('listening to *:4000');
 });
