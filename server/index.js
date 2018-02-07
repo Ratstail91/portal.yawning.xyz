@@ -24,9 +24,11 @@ app.use(expressFormidable());
 
 // Db connections
 const db = mysql.createConnection({
-  host: 'localhost',
+  host: 'island.krgamestudios.com',
   user: 'node',
-  password: process.env.MYSQL_PASSWORD || fs.readFileSync('../node.pwd', 'utf8').replace(/^\s+|\s+$/g, '')
+  password: process.env.MYSQL_PASSWORD || fs.readFileSync('../node.pwd', 'utf8').replace(/^\s+|\s+$/g, ''),
+  database: 'yawning',
+  port: '3306'
 });
 
 db.connect(err => {
@@ -51,12 +53,14 @@ app.use('/styles', express.static(workingDir + '../public_html/styles'));
 
 // Handle messages
 app.post('/signup', (req, res, next) => {
+console.log('MARK 1');
   // Valid email and password
   if (!validateEmail(req.fields.email) || req.fields.password.length < 8 || req.fields.password !== req.fields.retype) {
     res.write('<html><body><img src="' + getMeme('hackerman') + '" /></body></html>');
     res.end();
     return;
   }
+console.log('MARK 2');
   // Check if the email already exists
   db.query('SELECT COUNT(*) FROM profiles WHERE email = ?', [req.fields.email], (err, results) => {
     if (err) {
@@ -93,9 +97,9 @@ app.post('/signup', (req, res, next) => {
           const addr = 'https://portal.yawning.xyz/verify?email=' + req.fields.email + '&verify=' + rand;
           const msg = 'Hello! Please visit the following address to verify your email: ';
           const msgHtml = '<html><body><p>' + msg + '<a href="' + addr + '">' + addr + '</a></p></body></html>';
-
+console.log('MARK 1');
           sendmail({
-            from: 'signup@portal.yawning.com',
+            from: 'signup@portal.yawning.xyz',
             to: req.fields.email,
             subject: 'email verification',
             text: msg + addr,
