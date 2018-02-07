@@ -37,9 +37,11 @@ var { getMeme, validateEmail } = require('./scripts/utilities.js');
 
 //db connections
 var db = mysql.createConnection({
-  host: 'localhost',
+  host: 'island.krgamestudios.com',
   user: 'node',
-  password: fs.readFileSync('../node.pwd', 'utf8').replace(/^\s+|\s+$/g, '')
+  password: fs.readFileSync('../node.pwd', 'utf8').replace(/^\s+|\s+$/g, ''),
+  database: 'yawning',
+  port: '3306'
 });
 
 db.connect(function(err) {
