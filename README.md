@@ -8,7 +8,7 @@ portal.yawning.xyz is a social media website created by one man in his mother's 
 
 ## My Projects, My Resume and My Philosophy
 
-This project is a learning tool for me, a way to pass the time, as well as a way to demonstrate my knowldege of NodeJS, ReactJS, MySQL and everything that goes with them. As such, this project is included on my [web development resume](https://krgamestudios.com/dl/resume.pdf). Since this is a demonstration of my skills, you'll have to forgive me if I go slow and try to get things to conform to my own beliefs and philosophies.
+This project is a learning tool for me, a way to pass the time, as well as a way to demonstrate my knowldege of NodeJS, ReactJS, MySQL and everything that goes with them. As such, this project is included on my [web development resume](https://krgamestudios.com/resume/Webdev.pdf). Since this is a demonstration of my skills, you'll have to forgive me if I go slow and try to get things to conform to my own beliefs and philosophies.
 
 "Make it work, then make it fast" This is something that I strive for. Maintaining stability is why some branches may be delayed in becoming part of the master branch. It is also why I'll drop everything to fix a bug before I implement new features. Thus, 3rd party libraries like formidable may be present, but not yet used.
 
