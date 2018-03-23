@@ -144,7 +144,3 @@ ul {
 .flexTable {
   flex: 0 1 auto;
 }
-
-.flexTable td:nth-child(1) {
-  min-width: 100px;
-}

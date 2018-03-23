@@ -14,7 +14,7 @@ class FooterPanel extends React.Component {
 
     return (
       <footer style={style}>
-        <p>Copyright <a href='http://krgamestudios.com'>KR Game Studios</a> 2017</p>
+        <p>Copyright <a href='http://krgamestudios.com'>KR Game Studios</a> 2017-2018</p>
       </footer>
     );
   };
