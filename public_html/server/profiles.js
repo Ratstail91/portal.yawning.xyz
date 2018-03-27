@@ -85,7 +85,7 @@ function updateProfile(db) {
     //parse form
     form.parse(req, function(err, fields) {
       if (err) throw err;
-
+console.log(fields);
       var query = 'SELECT lastToken FROM profiles WHERE id = ?;';
       db.query(query, [fields.id], function(err, queryResults) {
         if (err) throw err;
@@ -99,14 +99,12 @@ function updateProfile(db) {
         }
 
         //create the update system
-        var query = "UPDATE profiles SET ? WHERE id = " + mysql.escape(fields.id) + ";";
+        var query = "UPDATE profiles SET ? WHERE id = " + db.escape(fields.id) + ";";
         var updateFields = {};
 
         var update = function(name, value) {
           if (value != undefined) {
-            updateFields = Object.assign(updateFields, {
-              name: value
-            });
+            updateFields[name] = value;
           }
         };
 
@@ -116,8 +114,10 @@ function updateProfile(db) {
         update('realname', fields.realname);
         update('biography', fields.biography);
 
+console.log(updateFields);
+
         //debugging
-        if (updatefields.length == 0) {
+        if (updateFields.length == 0) {
           res.status(400).write('Invalid update data');
           res.end();
           return;

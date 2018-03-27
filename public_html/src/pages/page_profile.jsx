@@ -7,6 +7,7 @@ import LegalPanel from '../panels/legal_panel.jsx';
 import { storeProfile } from '../reducers/profile.js';
 
 class PageProfile extends React.Component {
+  //misc. functions
   constructor(props) {
     super(props);
     this.state = {
@@ -21,6 +22,13 @@ class PageProfile extends React.Component {
     };
   };
 
+  setWarning(s) {
+    this.setState({
+      warning: s
+    });
+  }
+
+  //the following functions request and store the profiles
   componentDidMount() {
     //redirect if NOT logged in (back to home)
     if (!this.props.id) {
@@ -34,30 +42,8 @@ class PageProfile extends React.Component {
     );
   }
 
-  setWarning(s) {
-    this.setState({
-      warning: s
-    });
-  }
-
-  toggleEditing() {
-    if (this.props.id !== this.state.id) {
-      //can't edit someone else's profile
-      return;
-    }
-
-    this.setState({
-      editing: !this.state.editing
-    });
-
-    if (!this.state.editing) {
-      this.updateProfile();
-    }
-  }
-
-  //request this profile's info, using my credentials
   requestProfile(profileId) {
-    //form data
+    //request this profile's info, using my credentials
     var formData = new FormData();
     formData.append('id', this.props.id);
     formData.append('token', this.props.token);
@@ -93,8 +79,57 @@ class PageProfile extends React.Component {
     xhttp.send(formData);
   }
 
-  //push any changes to the server
-  updateProfile() {
+  storeProfile(profileId, email, avatar, username, realname, biography) {
+    //if profileId matches props.id, update the store
+    if (profileId == this.props.id) {
+      this.setState({
+        id: profileId,
+        email: email || '',
+        avatar: avatar || '',
+        username: username || '',
+        realname: realname || '',
+        biography: biography || ''
+      });
+
+      this.props.storeProfile(
+        email,
+        avatar,
+        username,
+        realname,
+        biography
+      );
+    }
+    //otherwise, only update the displayed info
+    else {
+      this.setState({
+        id: profileId,
+        email: email || '(hidden)',
+        avatar: avatar || 'private.png',
+        username: username || '(hidden)',
+        realname: realname || '(hidden)',
+        biography: biography || '(hidden)'
+      });
+    }
+  }
+
+  //the following functions edit the profile data
+  toggleEditing() {
+    if (this.props.id !== this.state.id) {
+      //can't edit someone else's profile
+      return;
+    }
+
+    if (this.state.editing) {
+      this.pushUpdatedProfile();
+    }
+
+    this.setState({
+      editing: !this.state.editing
+    });
+  }
+
+  pushUpdatedProfile() {
+    //push any changes to the server
     //count the number of fields to update
     var count = 0;
 
@@ -138,6 +173,7 @@ class PageProfile extends React.Component {
     xhttp.onreadystatechange = function() {
       if (xhttp.readyState === 4) {
         if (xhttp.status === 200) {
+          //sync the displayed data
           this.requestProfile(this.props.id);
         }
         else if (xhttp.status === 400) {
@@ -155,39 +191,7 @@ class PageProfile extends React.Component {
     xhttp.send(formData);
   }
 
-  //if profileId matches props.id, update the store
-  storeProfile(profileId, email, avatar, username, realname, biography) {
-    if (profileId == this.props.id) {
-      this.setState({
-        id: profileId,
-        email: email || '',
-        avatar: avatar || '',
-        username: username || '',
-        realname: realname || '',
-        biography: biography || ''
-      });
-
-      this.props.storeProfile(
-        email,
-        avatar,
-        username,
-        realname,
-        biography
-      );
-    }
-    //ontherwise, only update the displayed info
-    else {
-      this.setState({
-        id: profileId,
-        email: email || '(hidden)',
-        avatar: avatar || 'private.png',
-        username: username || '(hidden)',
-        realname: realname || '(hidden)',
-        biography: biography || '(hidden)'
-      });
-    }
-  }
-
+  //finally, render everything
   render() {
     //styles
     var warningStyle = {
@@ -204,30 +208,46 @@ class PageProfile extends React.Component {
       </div>
     );
 
-    //utilities
-    var makeRow = function(left, right) {
-      return (
-        <tr>
-          <td className='right'>{left}</td>
-          <td>{right}</td>
-        </tr>
+    var mainPanel;
+
+    if (this.state.editing) {
+      //editing
+      mainPanel = (
+        <form onSubmit={(e) => {e.preventDefault(); this.toggleEditing();}}>
+          <label>Avatar: Can't change</label><br />
+          <label>Email: Can't change</label><br />
+          <label>Username:<input value={this.state.username} onChange={(e) => {this.setState({username:e.target.value});}} /></label><br />
+          <label>Real Name:<input value={this.state.realname} onChange={(e) => {this.setState({realname:e.target.value});}} /></label><br />
+          <label>Username:<textarea value={this.state.biography} onChange={(e) => {this.setState({biography:e.target.value});}} /></label><br />
+          <input type="submit" value="Submit" />
+        </form>
+      );
+    } else {
+      //utilities
+      var makeRow = function(left, right) {
+        return (
+          <tr>
+            <td className='right'>{left}</td>
+            <td>{right}</td>
+          </tr>
+        );
+      }
+
+      //standard display
+      mainPanel = (
+        <div className='page'>
+          <img src={'/avatars/' + (this.state.avatar || 'default.png')} className='avatarNormal' />
+          <table className='flexTable'>
+            <tbody>
+              {makeRow('Email:', this.state.email || 'na')}
+              {makeRow('Username:', this.state.username || 'na')}
+              {makeRow('Real Name:', this.state.realname || 'na')}
+              {makeRow('Biography:', this.state.biography || 'na')}
+            </tbody>
+          </table>
+        </div>
       );
     }
-
-    //standard display
-    var mainPanel = (
-      <div className='page'>
-        <img src={'/avatars/' + (this.state.avatar || 'default.png')} className='avatarNormal' />
-        <table className='flexTable'>
-          <tbody>
-            {makeRow('Email:', this.state.email || 'na')}
-            {makeRow('Username:', this.state.username || 'na')}
-            {makeRow('Real Name:', this.state.realname || 'na')}
-            {makeRow('Biography:', this.state.biography || 'na')}
-          </tbody>
-        </table>
-      </div>
-    );
 
     return (
       <div className='page'>
@@ -237,7 +257,10 @@ class PageProfile extends React.Component {
         </div>
         <div className="sexyLayout">
           <div style={{flex: '0 1 auto', display: 'flex', flexDirection: 'column'}}>
-            <OptionsPanel custom={customLinks} profileClick={()=>{this.setState({editing:false}); this.requestProfile(this.props.id);}} />
+            <OptionsPanel
+              custom={customLinks}
+              profileClick={()=>{this.setState({editing:false}); this.requestProfile(this.props.id);}}
+            />
             <div style={{flex: '1'}}></div>
           </div>
           {mainPanel}
