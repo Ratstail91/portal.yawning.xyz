@@ -214,12 +214,47 @@ class PageProfile extends React.Component {
       //editing
       mainPanel = (
         <form onSubmit={(e) => {e.preventDefault(); this.toggleEditing();}}>
-          <label>Avatar: Can't change</label><br />
-          <label>Email: Can't change</label><br />
-          <label>Username:<input value={this.state.username} onChange={(e) => {this.setState({username:e.target.value});}} /></label><br />
-          <label>Real Name:<input value={this.state.realname} onChange={(e) => {this.setState({realname:e.target.value});}} /></label><br />
-          <label>Username:<textarea value={this.state.biography} onChange={(e) => {this.setState({biography:e.target.value});}} /></label><br />
-          <input type="submit" value="Submit" />
+          <table className='flexTable'>
+            <tr>
+              <th>Field</th>
+              <th>Value</th>
+              <th>Privacy</th>
+            </tr>
+
+            <tr>
+              <td className="right">Avatar:</td>
+              <td>Can't Change</td>
+              <td>Privacy</td>
+            </tr>
+
+            <tr>
+              <td className="right">Email:</td>
+              <td>Can't Change</td>
+              <td>Privacy</td>
+            </tr>
+
+            <tr>
+              <td className="right">Username:</td>
+              <td><input value={this.state.username} onChange={(e) => {this.setState({username:e.target.value});}} /></td>
+              <td>Privacy</td>
+            </tr>
+
+            <tr>
+              <td className="right">Real Name:</td>
+              <td><input value={this.state.realname} onChange={(e) => {this.setState({realname:e.target.value});}} /></td>
+              <td>Privacy</td>
+            </tr>
+
+            <tr>
+              <td className="right">Biography:</td>
+              <td><textarea value={this.state.biography} onChange={(e) => {this.setState({biography:e.target.value});}} /></td>
+              <td>Privacy</td>
+            </tr>
+
+            <tr>
+              <td><input type="submit" value="Submit" /></td>
+            </tr>
+          </table>
         </form>
       );
     } else {
@@ -235,15 +270,13 @@ class PageProfile extends React.Component {
 
       //standard display
       mainPanel = (
-        <div className='page'>
+        <div className="page">
           <img src={'/avatars/' + (this.state.avatar || 'default.png')} className='avatarNormal' />
           <table className='flexTable'>
-            <tbody>
-              {makeRow('Email:', this.state.email || 'na')}
-              {makeRow('Username:', this.state.username || 'na')}
-              {makeRow('Real Name:', this.state.realname || 'na')}
-              {makeRow('Biography:', this.state.biography || 'na')}
-            </tbody>
+            {makeRow('Email:', this.state.email || 'na')}
+            {makeRow('Username:', this.state.username || 'na')}
+            {makeRow('Real Name:', this.state.realname || 'na')}
+            {makeRow('Biography:', this.state.biography || 'na')}
           </table>
         </div>
       );
