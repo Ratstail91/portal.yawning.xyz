@@ -21,28 +21,45 @@ function getRelationLevel(db, id, token, profileId, cb) {
       if (err) return cb(err);
       if (results.length === 0) return cb(404);
       if (id == profileId) return cb(undefined, SELF);
-      return cb(undefined, PUBLIC);
+      return cb(undefined, PUBLIC); //TODO: incomplete
     });
   });
 }
 
 //create db connection
-function createDatabaseConnection() {
+var db;
+
+var dbConfig = {
+  host: 'island.krgamestudios.com',
+  user: 'node',
+  password: fs.readFileSync('../node.pwd', 'utf8').replace(/^\s+|\s+$/g, ''),
+  database: 'yawning',
+  port: '3306'
+};
+
+function handleDisconnect() {
   //single-use
-  var db = mysql.createConnection({
-    host: 'island.krgamestudios.com',
-    user: 'node',
-    password: fs.readFileSync('../node.pwd', 'utf8').replace(/^\s+|\s+$/g, ''),
-    database: 'yawning',
-    port: '3306'
-  });
+  db = mysql.createConnection(dbConfig);
 
   db.connect(function(err) {
-    if (err) throw err;
-    db.query('use yawning;', function(err) {
-      if (err) throw err;
-    });
-    console.log('connected to mysql');
+    if (err)  {
+      console.log('Error when connecting to mariadb:', err);
+      setTimeout(handleDisconnect, 2000);
+    } else {
+      db.query('use yawning;', function(err) {
+        if (err) throw err;
+      });
+      console.log('connected to mariadb');
+    }
+  });
+
+  db.on('error', function(err) {
+    console.log('db error:', err);
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      handleDisconnect();
+    } else {
+      throw err;
+    }
   });
 
   return db;
@@ -55,5 +72,5 @@ module.exports = {
   PUBLIC: PUBLIC,
   BLOCKED: BLOCKED,
   getRelationLevel: getRelationLevel,
-  createDatabaseConnection: createDatabaseConnection
+  createDatabaseConnection: handleDisconnect
 }

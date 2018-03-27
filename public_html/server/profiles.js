@@ -29,13 +29,15 @@ function requestProfile(db) {
         else if (err) throw err;
 
         //get the userId's information
-        var query = 'SELECT email, avatar, username, realname, biography FROM profiles WHERE id=' + fields.profileId + ';';
-        db.query(query, function(err, profileResults) {
+        var query = 'SELECT email, avatar, username, realname, biography FROM profiles WHERE id= ?;';
+        db.query(query, [fields.profileId], function(err, profileResults) {
           if (err) throw err;
 
+          //TODO: reduce this double query
+
           //get the userId's visibility settings
-          var query = 'SELECT visibleProfile, visibleEmail, visibleAvatar, visibleUsername, visibleRealname, visibleBiography FROM profiles WHERE id=' + fields.profileId + ';';
-          db.query(query, function(err, visibilityResults) {
+          var query = 'SELECT visibleProfile, visibleEmail, visibleAvatar, visibleUsername, visibleRealname, visibleBiography FROM profiles WHERE id= ?;';
+          db.query(query, [fields.profileId], function(err, visibilityResults) {
             if (err) throw err;
 
             //determine what to add to the return message
@@ -97,40 +99,32 @@ function updateProfile(db) {
         }
 
         //create the update system
-        var fieldCount = 0;
-        var query = 'UPDATE profiles SET ';
+        var query = "UPDATE profiles SET ? WHERE id = " + mysql.escape(fields.id) + ";";
+        var updateFields = {};
+
         var update = function(name, value) {
           if (value != undefined) {
-            if (fieldCount > 0) {
-              query += ', ';
-            }
-            query += name + ' = \'' + value + '\' ';
-            fieldCount += 1;
+            updateFields = Object.assign(updateFields, {
+              name: value
+            });
           }
-        }
+        };
 
-        //add to the query
 //        update('email', fields.email);
         update('avatar', fields.avatar);
         update('username', fields.username);
         update('realname', fields.realname);
         update('biography', fields.biography);
 
-        query += ' WHERE id = ' + fields.id + ';';
-
         //debugging
-        console.log(query);
-
-        //just in case
-        if (fieldCount === 0) {
+        if (updatefields.length == 0) {
           res.status(400).write('Invalid update data');
           res.end();
           return;
         }
 
-        db.query(query, function(err, updateResults) {
+        db.query(query, updateFields, function(err, results) {
           if (err) throw err;
-
           res.status(200);
           res.end();
         });

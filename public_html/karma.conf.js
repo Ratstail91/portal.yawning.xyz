@@ -25,7 +25,13 @@ module.exports = function(config) {
     port: 9876,
     colors: true,
     autoWatch: false,
-    browsers: ['Firefox', 'Chrome'],
+    browsers: ['FirefoxHeadless', 'Chrome'],
+    customLaunchers: {
+      FirefoxHeadless: {
+        base: 'Firefox',
+        flags: ['-headless']
+      }
+    },
     singleRun: true,
     concurrency: Infinity,
     client: {
