@@ -88,6 +88,8 @@ function updateProfile(db) {
     form.parse(req, function(err, fields, files) {
       if (err) throw err;
 
+console.log(fields);
+
       var query = 'SELECT lastToken FROM profiles WHERE id = ?;';
       db.query(query, [fields.id], function(err, queryResults) {
         if (err) throw err;
@@ -136,6 +138,11 @@ function updateProfile(db) {
 }
 
 function processAvatar(id, file) {
+  //check exists
+  if (file == undefined) {
+    return undefined;
+  }
+
   //check file type
   var ext = file.name.split('.').pop();
   if (ext !== 'png' && ext !== 'jpg') {
