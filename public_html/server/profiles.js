@@ -1,4 +1,6 @@
 var formidable = require('formidable');
+var fs = require('fs');
+var thumb = require('node-thumbnail').thumb;
 
 var {getRelationLevel, SELF, FRIEND, GROUP, PUBLIC, BLOCKED} = require('./databases.js');
 
@@ -83,9 +85,9 @@ function updateProfile(db) {
     var form = formidable.IncomingForm();
 
     //parse form
-    form.parse(req, function(err, fields) {
+    form.parse(req, function(err, fields, files) {
       if (err) throw err;
-console.log(fields);
+
       var query = 'SELECT lastToken FROM profiles WHERE id = ?;';
       db.query(query, [fields.id], function(err, queryResults) {
         if (err) throw err;
@@ -108,13 +110,13 @@ console.log(fields);
           }
         };
 
+        fields.avatar = processAvatar(fields.id, files.avatar);
+
 //        update('email', fields.email);
         update('avatar', fields.avatar);
         update('username', fields.username);
         update('realname', fields.realname);
         update('biography', fields.biography);
-
-console.log(updateFields);
 
         //debugging
         if (updateFields.length == 0) {
@@ -131,6 +133,29 @@ console.log(updateFields);
       });
     });
   };
+}
+
+function processAvatar(id, file) {
+  //check file type
+  var ext = file.name.split('.').pop();
+  if (ext !== 'png' && ext !== 'jpg') {
+    return undefined;
+  }
+
+  //rename
+  fs.rename(file.path, '/tmp/' + file.name, () => {
+    thumb({
+      source: '/tmp/' + file.name,
+      destination: 'avatars',
+      prefix: 'avatar_',
+      suffix: '',
+      width: 200,
+      overwrite: true,
+      basename: id
+    });
+  });
+
+  return 'avatar_' + id + '.' + ext;
 }
 
 module.exports = {

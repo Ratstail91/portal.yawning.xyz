@@ -223,7 +223,7 @@ class PageProfile extends React.Component {
 
             <tr>
               <td className="right">Avatar:</td>
-              <td>Can't Change</td>
+              <td><input type="file" onChange={(e) => { this.setState( {avatar:e.target.files[0]} ); }} /></td>
               <td>Privacy</td>
             </tr>
 
