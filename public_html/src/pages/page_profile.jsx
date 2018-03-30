@@ -213,49 +213,55 @@ class PageProfile extends React.Component {
     if (this.state.editing) {
       //editing
       mainPanel = (
-        <form onSubmit={(e) => {e.preventDefault(); this.toggleEditing();}}>
-          <table className='flexTable'>
-            <tr>
-              <th>Field</th>
-              <th>Value</th>
-              <th>Privacy</th>
-            </tr>
+        <div className="page">
+          <form onSubmit={(e) => {e.preventDefault(); this.toggleEditing();}}>
+            <table className='flexTable'>
+              <thead>
+                <tr>
+                  <th>Field</th>
+                  <th>Value</th>
+                  <th>Privacy</th>
+                </tr>
+              </thead>
 
-            <tr>
-              <td className="right">Avatar:</td>
-              <td><input type="file" onChange={(e) => { this.setState( {avatar:e.target.files[0]} ); }} /></td>
-              <td>Privacy</td>
-            </tr>
+              <tbody>
+                <tr>
+                  <td className="right">Avatar:</td>
+                  <td><input type="file" onChange={(e) => { this.setState( {avatar:e.target.files[0]} ); }} /></td>
+                  <td>Privacy</td>
+                </tr>
 
-            <tr>
-              <td className="right">Email:</td>
-              <td>Can't Change</td>
-              <td>Privacy</td>
-            </tr>
+                <tr>
+                  <td className="right">Email:</td>
+                  <td>Can't Change</td>
+                  <td>Privacy</td>
+                </tr>
 
-            <tr>
-              <td className="right">Username:</td>
-              <td><input value={this.state.username} onChange={(e) => {this.setState({username:e.target.value});}} /></td>
-              <td>Privacy</td>
-            </tr>
+                <tr>
+                  <td className="right">Username:</td>
+                  <td><input value={this.state.username} onChange={(e) => {this.setState({username:e.target.value});}} /></td>
+                  <td>Privacy</td>
+                </tr>
 
-            <tr>
-              <td className="right">Real Name:</td>
-              <td><input value={this.state.realname} onChange={(e) => {this.setState({realname:e.target.value});}} /></td>
-              <td>Privacy</td>
-            </tr>
+                <tr>
+                  <td className="right">Real Name:</td>
+                  <td><input value={this.state.realname} onChange={(e) => {this.setState({realname:e.target.value});}} /></td>
+                  <td>Privacy</td>
+                </tr>
 
-            <tr>
-              <td className="right">Biography:</td>
-              <td><textarea value={this.state.biography} onChange={(e) => {this.setState({biography:e.target.value});}} /></td>
-              <td>Privacy</td>
-            </tr>
+                <tr>
+                  <td className="right">Biography:</td>
+                  <td><textarea value={this.state.biography} onChange={(e) => {this.setState({biography:e.target.value});}} /></td>
+                  <td>Privacy</td>
+                </tr>
 
-            <tr>
-              <td><input type="submit" value="Submit" /></td>
-            </tr>
-          </table>
-        </form>
+                <tr>
+                  <td><input type="submit" value="Submit" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+        </div>
       );
     } else {
       //utilities
@@ -273,10 +279,12 @@ class PageProfile extends React.Component {
         <div className="page">
           <img src={'/avatars/' + (this.state.avatar || 'default.png')} className='avatarNormal' />
           <table className='flexTable'>
-            {makeRow('Email:', this.state.email || 'na')}
-            {makeRow('Username:', this.state.username || 'na')}
-            {makeRow('Real Name:', this.state.realname || 'na')}
-            {makeRow('Biography:', this.state.biography || 'na')}
+            <tbody>
+              {makeRow('Email:', this.state.email || 'N/a')}
+              {makeRow('Username:', this.state.username || 'N/a')}
+              {makeRow('Real Name:', this.state.realname || 'N/a')}
+              {makeRow('Biography:', this.state.biography || 'N/a')}
+            </tbody>
           </table>
         </div>
       );
