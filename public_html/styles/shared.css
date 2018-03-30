@@ -145,3 +145,31 @@ ul {
   flex: 0 1 auto;
 }
 
+.flexTable tbody tr td:nth-child(1) {
+  font-weight: bold;
+}
+
+@media screen and (max-width: 479px) {
+  .flexTable .right {
+    text-align: left;
+  }
+
+  .flexTable,
+  .flexTable thead,
+  .flexTable thead tr,
+  .flexTable thead tr th
+  .flexTable tbody,
+  .flexTable tbody tr,
+  .flexTable tbody tr td
+  {
+    display: block;
+  }
+
+  .flexTable thead {
+    display: none;
+  }
+
+  .flexTable tbody tr {
+    padding-bottom: 0.5em;
+  }
+}
