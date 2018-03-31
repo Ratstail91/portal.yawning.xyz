@@ -82,13 +82,14 @@ function requestProfile(db) {
 function updateProfile(db) {
   return function(req, res) {
     //formidable handles forms
-    var form = formidable.IncomingForm();
+    var form = formidable.IncomingForm({
+      uploadDir: '/tmp',
+      keepExtensions: true
+    });
 
     //parse form
     form.parse(req, function(err, fields, files) {
       if (err) throw err;
-
-console.log(fields);
 
       var query = 'SELECT lastToken FROM profiles WHERE id = ?;';
       db.query(query, [fields.id], function(err, queryResults) {
@@ -144,22 +145,20 @@ function processAvatar(id, file) {
   }
 
   //check file type
-  var ext = file.name.split('.').pop();
+  var ext = file.path.split('.').pop();
   if (ext !== 'png' && ext !== 'jpg') {
     return undefined;
   }
 
-  //rename
-  fs.rename(file.path, '/tmp/' + file.name, () => {
-    thumb({
-      source: '/tmp/' + file.name,
-      destination: 'avatars',
-      prefix: 'avatar_',
-      suffix: '',
-      width: 200,
-      overwrite: true,
-      basename: id
-    });
+  //thumbify
+  thumb({
+    source: file.path,
+    destination: 'avatars',
+    prefix: 'avatar_',
+    suffix: '',
+    width: 200,
+    overwrite: true,
+    basename: id
   });
 
   return 'avatar_' + id + '.' + ext;

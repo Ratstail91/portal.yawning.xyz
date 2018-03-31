@@ -23,7 +23,8 @@ function signup(db) {
       }
 
       //check if the email already exists
-      db.query('SELECT COUNT(*) FROM profiles WHERE email="' + fields.email + '";', function(err, results) {
+      var query = 'SELECT COUNT(*) FROM profiles WHERE email= ?;';
+      db.query(query, [fields.email], function(err, results) {
         if (err) throw err;
 
         if (results[0][Object.keys(results[0])[0]] !== 0) {
@@ -40,13 +41,9 @@ function signup(db) {
 
             //store the email, salt & hash
             var rand = Math.floor(Math.random() * 65535);
-            var query = 'REPLACE INTO signups (email, salt, hash, verify) VALUES (';
-            query += '"' + fields.email + '"' + ',';
-            query += '"' + salt + '"' + ',';
-            query += '"' + hash + '"' + ',';
-            query += rand + ');';
 
-            db.query(query, function(err) {
+            var query = 'REPLACE INTO signups (email, salt, hash, verify) VALUES (?, ?, ?, ?);';
+            db.query(query, [fields.email, salt, hash, rand], function(err) {
               if (err) throw err;
 
               //send the verification email
