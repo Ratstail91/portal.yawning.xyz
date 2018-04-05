@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import markdownIt from 'markdown-it';
+import ReactMarkdown from 'react-markdown';
 
 class PageLegal extends React.Component {
   constructor(props) {
@@ -16,10 +16,9 @@ class PageLegal extends React.Component {
     xhttp.onreadystatechange = function() {
       if (xhttp.readyState === 4) {
         if (xhttp.status === 200) {
-          var parser = markdownIt();
           this.setState({
             //TODO: this seems fishy
-            body: parser.render(xhttp.responseText)
+            body: xhttp.responseText
           });
         }
       }
@@ -33,7 +32,7 @@ class PageLegal extends React.Component {
   render() {
     return (
       <div className='page'>
-        <div dangerouslySetInnerHTML={{__html: this.state.body}}></div>
+        <ReactMarkdown source={this.state.body} />
         <p>Return <Link to='/'>Home</Link></p>
       </div>
     );
