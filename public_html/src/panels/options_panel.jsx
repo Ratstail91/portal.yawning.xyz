@@ -23,36 +23,20 @@ class OptionsPanel extends React.Component {
   };
 
   render() {
-    var style = {
-      flex: '0 1 auto',
-      borderStyle: 'solid',
-      borderWidth: '1px',
-      borderColor: 'black',
-      margin: '5px',
-      padding: '0 5px'
-    };
-
-    var hrStyle = {
-      border: 'none',
-      height: '1px',
-      color: 'black',
-      backgroundColor: 'black'
-    };
-
     //customisable sub-menu
     var custom;
 
     if (typeof(this.props.custom) !== "undefined") {
       custom = (
         <div>
-          <hr style={hrStyle} />
+          <hr />
           {this.props.custom}
         </div>
       );
     }
 
     return (
-      <div style={style}>
+      <div className='optionsPanel'>
 
         <p><Link to='/' onClick={()=>{this.state.onClick();this.state.homeClick();}}>Home</Link></p>
 

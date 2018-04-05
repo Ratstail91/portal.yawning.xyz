@@ -4,12 +4,11 @@ import { Link, withRouter } from 'react-router-dom';
 class LegalPanel extends React.Component {
   render() {
     var style = {
-      flex: '0 1 auto',
+      flex: '1 1 auto',
       justifySelf: 'flex-end',
-      marginBottom: '-2em',
       display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'center',
+      flexDirection: 'column',
+      justifyContent: 'flex-end',
       alignItems: 'center',
     };
 

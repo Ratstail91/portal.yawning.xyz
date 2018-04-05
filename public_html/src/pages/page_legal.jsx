@@ -18,6 +18,7 @@ class PageLegal extends React.Component {
         if (xhttp.status === 200) {
           var parser = markdownIt();
           this.setState({
+            //TODO: this seems fishy
             body: parser.render(xhttp.responseText)
           });
         }

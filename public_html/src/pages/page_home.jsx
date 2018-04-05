@@ -20,7 +20,7 @@ class PageHome extends React.Component {
 
   render() {
     var linkStyles = {
-      flex: '1',
+      flex: '0 1 auto',
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-around'
