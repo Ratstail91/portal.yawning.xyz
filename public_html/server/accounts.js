@@ -53,7 +53,7 @@ function signup(db) {
               var msgHtml = '<html><body><p>' + msg + '<a href="' + addr + '">' + addr + '</a></p></body></html>';
 
               sendmail({
-                from: 'signup@portal.yawning.com',
+                from: 'signup@portal.yawning.xyz',
                 to: fields.email,
                 subject: 'email verification',
                 text: msg + addr,
