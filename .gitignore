@@ -14,3 +14,6 @@ logs/**
 #output files
 *.bundle.js
 /**/avatars/*
+
+#development files
+package-lock.json
