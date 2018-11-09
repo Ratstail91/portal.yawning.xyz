@@ -1,0 +1,19 @@
+#directories
+logs/**
+/**/coverage
+/**/node_modules
+/**/dl
+/**/music
+
+#config files
+/**/*.env
+
+#log files
+/**/*.log
+
+#output files
+*.bundle.js
+/**/avatars/*
+
+#development files
+package-lock.json
