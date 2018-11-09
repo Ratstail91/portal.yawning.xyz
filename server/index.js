@@ -9,6 +9,9 @@ let http = require("http").Server(app);
 //other tools
 let path = require("path");
 
+//handle the routes
+app.use("/signup", require("./accounts/signup.js"));
+
 //default access paths
 app.use("/styles", express.static(path.resolve(process.env.PATH_CLIENT +  "/styles")));
 

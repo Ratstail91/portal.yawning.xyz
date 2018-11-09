@@ -16,9 +16,9 @@ class Landing extends React.Component {
 				<p>Yawning.xyz is a social media website created by one man in his mother's basement for use by his D&D playgroup. All are welcome here, but please be respectful of others, and don't make a mess on the carpet.</p>
 				<div className="ui centered">
 					<Button.Group>
-						<LinkButton to="/login">Login</LinkButton>
-						<LinkButton to="/signup">Sign Up</LinkButton>
-						<LinkButton to="/resetpassword">Reset Password</LinkButton>
+						<LinkButton to="/login" color="green">Login</LinkButton>
+						<LinkButton to="/signup" color="green">Sign Up</LinkButton>
+						<LinkButton to="/resetpassword" color="green">Reset Password</LinkButton>
 					</Button.Group>
 				</div>
 			</div>

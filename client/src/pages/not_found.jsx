@@ -13,7 +13,7 @@ class NotFound extends React.Component {
 		return (
 			<div className="ui centerScreen">
 				<h1>Page not found!</h1>
-				<LinkButton to="/">Return Home</LinkButton>
+				<LinkButton to="/" color="green">Return Home</LinkButton>
 			</div>
 		);
 	}

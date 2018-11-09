@@ -18,8 +18,6 @@ const LinkButton = (props) => {
 		...rest
 	} = props;
 
-	rest.color = "green";
-
 	return (
 		<Button
 			{...rest} // `children` is just another prop!

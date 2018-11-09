@@ -99,3 +99,17 @@ footer {
   flex-direction: column;
   justify-content: flex-start;
 }
+
+/* warning message */
+.warning {
+  flex: 0 1 auto;
+  display: none;
+  flex-direction: row;
+  justify-content: center;
+  align-content: flex-end;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #ff0000;
+  background: #ff6666;
+  font-weight: bold;
+}
