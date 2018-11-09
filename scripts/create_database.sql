@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS profiles (
 	avatar VARCHAR(50) NOT NULL DEFAULT 'default.png',
 	username VARCHAR(50) NOT NULL DEFAULT '',
 	realname VARCHAR(50) NOT NULL DEFAULT '',
-	biography VARCHAR(5000) NOT NULL DEFAULT '',
+	biography VARCHAR(5000) NOT NULL DEFAULT ''
 );
 
 /*

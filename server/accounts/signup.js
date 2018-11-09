@@ -17,9 +17,7 @@ router.post("/", (req, res) => {
 	form.parse(req, (err, fields) => {
 		if (err) throw err;
 		if (!utils.validateEmail(fields.email) || fields.password.length < 8 || fields.password !== fields.retype) {
-			res.write("Error parsing the signup form data");
-			console.log(fields);
-			res.end();
+			res.end("Error parsing the signup form data");
 			return;
 		}
 
@@ -29,8 +27,7 @@ router.post("/", (req, res) => {
 			if (err) throw err;
 
 			if (results[0].count !== 0) {
-				res.write("Error checking uniqueness of the email");
-				res.end();
+				res.end("Error checking uniqueness of the email");
 				return;
 			}
 
@@ -52,20 +49,22 @@ router.post("/", (req, res) => {
 						let msgHTML = `<html><body><p>${msg}<a href=${addr}>${addr}</a></p></body></html>`;
 
 						sendmail({
+							secure: true,
+							tls: {
+								rejectUnauthorized: false
+							},
 							from: "signup@yawning.xyz",
 							to: fields.email,
 							subject: "Email Verification",
 							text: msg + addr,
 							html: msgHTML,
 						}, (err, reply) => {
-								if (err) {
-									res.write("Unknown error occurred (Did you use a valid email?):" + err);
-									res.end();
-									return;
-								}
+							if (err) {
+								res.end("Unknown error occurred (Did you use a valid email?): " + err);
+								return;
+							}
 
-								res.write("Verification email sent");
-								res.end();
+							res.end("Verification email sent");
 						});
 					});
 				});

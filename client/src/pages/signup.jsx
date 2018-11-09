@@ -78,15 +78,15 @@ class Signup extends React.Component {
 				<Form action="/signup" method="post" onSubmit={(e) => this.myClick(e)}>
 					<Form.Field>
 						<label>Email</label>
-						<input placeholder="your@email.com" value={this.state.email} onChange={this.updateEmail.bind(this)} />
+						<input placeholder="your@email.com" type="text" name="email" value={this.state.email} onChange={this.updateEmail.bind(this)} />
 					</Form.Field>
 					<Form.Field>
 						<label>Password</label>
-						<input placeholder="Password" type="password" value={this.state.password} onChange={this.updatePassword.bind(this)} />
+						<input placeholder="Password" type="password" name="password" value={this.state.password} onChange={this.updatePassword.bind(this)} />
 					</Form.Field>
 					<Form.Field>
 						<label>Retype Password</label>
-						<input placeholder="Password" type="password" value={this.state.retype} onChange={this.updateRetype.bind(this)} />
+						<input placeholder="Password" type="password" name="retype" value={this.state.retype} onChange={this.updateRetype.bind(this)} />
 					</Form.Field>
 					<Button type="submit" color="green">Submit</Button>
 				</Form>
