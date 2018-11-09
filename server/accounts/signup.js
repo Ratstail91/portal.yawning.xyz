@@ -3,7 +3,7 @@ let express = require("express");
 let router = express.Router();
 let formidable = require("formidable");
 let bcrypt = require("bcrypt");
-let sendmail = require("sendmail")();
+let sendmail = require("sendmail")({silent: true});
 
 let utils = require("../../common/utilities.js");
 let database = require("../database/database.js");
@@ -43,7 +43,7 @@ router.post("/", (req, res) => {
 						if (err) throw err;
 
 						//send the verification email
-						let addr = `${process.env.SERVER_HOST}/verify?email=${fields.email}&verify=${rand}`;
+						let addr = `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/verify?email=${fields.email}&verify=${rand}`;
 						let msg = "Hello! Please visit the following address to verify your email: ";
 
 						let msgHTML = `<html><body><p>${msg}<a href=${addr}>${addr}</a></p></body></html>`;
