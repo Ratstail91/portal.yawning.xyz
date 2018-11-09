@@ -1,0 +1,15 @@
+# Configuration for yawning.xyz
+
+SERVER_HOST=localhost
+SERVER_PORT=4000
+
+PATH_COMMON=../common
+PATH_CLIENT=../client
+PATH_SERVER=../server
+
+DATABASE_HOST=localhost
+DATABASE_PORT=3306
+DATABASE_USER=node
+DATABASE_PASS=helloworld
+DATABASE_NAME=yawning
+
