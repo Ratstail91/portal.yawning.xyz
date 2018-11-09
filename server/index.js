@@ -11,6 +11,8 @@ let path = require("path");
 
 //handle the routes
 app.use("/signup", require("./accounts/signup.js"));
+app.use("/verify", require("./accounts/verify.js"));
+app.use("/login", require("./accounts/login.js"));
 
 //default access paths
 app.use("/styles", express.static(path.resolve(process.env.PATH_CLIENT +  "/styles")));

@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 //include other pages
 import Landing from "./pages/landing.jsx";
 import Signup from "./pages/signup.jsx";
+import Login from "./pages/login.jsx";
 import NotFound from "./pages/not_found.jsx";
 
 //include panels
@@ -22,6 +23,7 @@ class App extends React.Component {
 						<Switch>
 							<Route exact path="/" component={ Landing } />
 							<Route exact path="/signup" component={ Signup } />
+							<Route exact path="/login" component={ Login } />
 							<Route exact path="*" component={ NotFound } />
 						</Switch>
 					</BrowserRouter>

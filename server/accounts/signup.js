@@ -22,7 +22,7 @@ router.post("/", (req, res) => {
 		}
 
 		//check if the email already exists
-		let query = "SELECT COUNT(*) AS count FROM profiles WHERE email = ?;";
+		let query = "SELECT COUNT(*) AS count FROM profiles WHERE email = ? LIMIT 1;";
 		dbConnection.query(query, [fields.email], (err, results) => {
 			if (err) throw err;
 
