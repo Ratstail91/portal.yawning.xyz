@@ -1,5 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
+
+import LinkButton from "../panels/link_button.jsx";
 
 import "../../styles/not_found.css";
 
@@ -10,9 +11,9 @@ class NotFound extends React.Component {
 
 	render() {
 		return (
-			<div className="centerScreen">
+			<div className="ui centerScreen">
 				<h1>Page not found!</h1>
-				<Link to="/">Return Home</Link>
+				<LinkButton to="/">Return Home</LinkButton>
 			</div>
 		);
 	}

@@ -16,12 +16,14 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className="central">
-				<BrowserRouter>
-					<Switch>
-						<Route exact path="/" component={ Landing } />
-						<Route exact path="*" component={ NotFound } />
-					</Switch>
-				</BrowserRouter>
+				<div className="panel">
+					<BrowserRouter>
+						<Switch>
+							<Route exact path="/" component={ Landing } />
+							<Route exact path="*" component={ NotFound } />
+						</Switch>
+					</BrowserRouter>
+				</div>
 				<Footer />
 			</div>
 		);
